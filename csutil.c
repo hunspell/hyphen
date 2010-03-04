@@ -17,21 +17,23 @@ char * mystrsep(char ** stringp, const char delim)
      char * dp = (char *)memchr(mp,(int)((unsigned char)delim),n);
      if (dp) {
        int nc;
-        *stringp = dp+1;
-        nc = (int)((unsigned long)dp - (unsigned long)mp); 
-        rv = (char *) malloc(nc+1);
-        memcpy(rv,mp,nc);
-        *(rv+nc) = '\0';
-        return rv;
+       *stringp = dp+1;
+       nc = (int)((unsigned long)dp - (unsigned long)mp); 
+       rv = (char *) malloc(nc+1);
+       if (rv) {
+         memcpy(rv,mp,nc);
+         *(rv+nc) = '\0';
+       }
      } else {
        rv = (char *) malloc(n+1);
-       memcpy(rv, mp, n);
-       *(rv+n) = '\0';
-       *stringp = mp + n;
-       return rv;
+       if (rv) {
+         memcpy(rv, mp, n);
+         *(rv+n) = '\0';
+         *stringp = mp + n;
+       }
      }
   }
-  return NULL;
+  return rv;
 }
 
 
