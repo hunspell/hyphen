@@ -289,10 +289,13 @@ for (k = 0; k == 0 || (k == 1 && nextlevel); k++) {
   /* read in character set info */
   if (k == 0) {
     for (i=0;i<MAX_NAME;i++) dict[k]->cset[i]= 0;
-    fgets(dict[k]->cset,  sizeof(dict[k]->cset),f);
-    for (i=0;i<MAX_NAME;i++)
-      if ((dict[k]->cset[i] == '\r') || (dict[k]->cset[i] == '\n'))
-        dict[k]->cset[i] = 0;
+    if (fgets(dict[k]->cset,  sizeof(dict[k]->cset),f) != NULL) {
+      for (i=0;i<MAX_NAME;i++)
+        if ((dict[k]->cset[i] == '\r') || (dict[k]->cset[i] == '\n'))
+          dict[k]->cset[i] = 0;
+    } else {
+      dict[k]->cset[0] = 0;
+    }
     dict[k]->utf8 = (strcmp(dict[k]->cset, "UTF-8") == 0);
   } else {
     strcpy(dict[k]->cset, dict[0]->cset);
