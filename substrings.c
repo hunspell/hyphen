@@ -180,7 +180,7 @@ int main(int argc, const char* argv[]) {
   if ((in = fopen(argv[1],"r"))==NULL) die("Could not read input");
   if ((out = fopen(argv[2],"w"))==NULL) die("Could not create output");
   // read all patterns and split in pure text (_key) & expanded patterns (_val)
-  while(fgets(format,132,in)) {
+  while(fgets(format,132,in) != NULL) {
     int l = strlen(format);
     if (format[l-1]=='\n') { l--; format[l]=0; } // Chomp
     if (format[0]=='%' || format[0]==0) {
@@ -193,6 +193,7 @@ int main(int argc, const char* argv[]) {
       int i,j;
       char *pat = (char*) malloc(l+1);
       char *org = (char*) malloc(l*2+1);
+      if (pat==NULL || org==NULL) die("not enough memory");
       expand(org,format,l);
       // remove hyphenation encoders (digits) from pat
       for (i=0,j=0; i<l; i++) {
@@ -224,10 +225,12 @@ int main(int argc, const char* argv[]) {
         if ((subpat_ndx = find_in(pattab_key,patterns,subpat))>=0) {
           int   newpat_ndx;
           char *newpat=malloc(l+1);
+          if (newpat==NULL) die("not enough memory");
       //printf("%s is embedded in %s\n",pattab_val[subpat_ndx],pattab_val[p]);
           strncpy(newpat, pat+0,l); newpat[l]=0;
           if ((newpat_ndx = find_in(newpattab_key,newpatterns,newpat))<0) {
             char *neworg = malloc(132); // TODO: compute exact length
+            if (neworg==NULL) die("not enough memory");
             expand(neworg,newpat,l);
             newpattab_key[newpatterns]   = newpat;
             newpattab_val[newpatterns++] = combine(neworg,pattab_val[subpat_ndx]);

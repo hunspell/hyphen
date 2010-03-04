@@ -1,3 +1,6 @@
+2010-03-04 Caolán McNamara <cmc at OOo>:
+	- hun#1724558 tidy substring.c a little
+
 2010-02-23 László Németh <nemeth at OOo>:
 	* hyphen.c: fix lefthyphenmin calculation for UTF-8 encoded input
 	

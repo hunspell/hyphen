@@ -119,7 +119,7 @@ main(int argc, char** argv)
 
     
   /* now read each word from the wtc file */
-    while(fgets(buf,BUFSIZE,wtclst)) {
+    while(fgets(buf,BUFSIZE,wtclst) != NULL) {
        k = strlen(buf);
        if (buf[k - 1] == '\n') buf[k - 1] = '\0';
        if (*buf && buf[k - 2] == '\r') buf[k-- - 2] = '\0';
