@@ -1,0 +1,17 @@
+Makefile
+autom4te.cache
+config.log
+config.status
+libtool
+stamp-h1
+.deps
+.libs
+example
+hyphen.us
+hyphen.us2
+hyphen.us3
+hyphen.us4
+substrings
+*.lo
+libhyphen.la
+hyphen-*.tar.gz
