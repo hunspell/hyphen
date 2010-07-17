@@ -1,5 +1,7 @@
 2010-07-17 Caolán McNamara <cmc at OOo>:
 	* strip down csutil.* to the bits that are used
+	* use libtool dlopen invocation to ensure we test in-tree
+	libhyphen during tests
 
 2010-03-04 Caolán McNamara <cmc at OOo>:
 	* hun#1724558 tidy substring.c a little

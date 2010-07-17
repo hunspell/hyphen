@@ -36,7 +36,7 @@ fi
 
 shopt -s expand_aliases
 
-alias example='../example'
+alias example='../libtool --mode=execute -dlopen ../.libs/libhyphen*.la ../example'
 
 if [ "$VALGRIND" != "" ]; then
   rm -f $TEMPDIR/test.pid*
@@ -46,7 +46,7 @@ if [ "$VALGRIND" != "" ]; then
   if [ ! -f ../.libs/lt-example ]; then
     echo "Use make check before Valgrind tests"
   else
-  alias example='valgrind --tool=$VALGRIND --leak-check=yes --show-reachable=yes --log-file=$TEMPDIR/test.pid ../.libs/lt-example'
+  alias example='../libtool --mode=execute -dlopen ../.libs/libhyphen*.la valgrind --tool=$VALGRIND --leak-check=yes --show-reachable=yes --log-file=$TEMPDIR/test.pid ../example'
   fi
 fi
 
