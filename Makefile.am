@@ -7,7 +7,7 @@ include_HEADERS = hyphen.h
 noinst_HEADERS = hnjalloc.h
 
 noinst_PROGRAMS = substrings example
-substrings_SOURCES = substrings.c csutil.c 
+substrings_SOURCES = substrings.c
 example_SOURCES = example.c csutil.c
 example_LDADD = libhyphen.la
 

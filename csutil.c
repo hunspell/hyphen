@@ -3,73 +3,13 @@
 #include <stdio.h>
 #include "csutil.h"
 
+struct cs_info {
+  unsigned char ccase;
+  unsigned char clower;
+  unsigned char cupper;
+};
 
-/* strip strings into token based on single char delimiter */
-/* acts like strsep() but only uses a delim char and not  */
-/* a delim string */
-
-char * mystrsep(char ** stringp, const char delim)
-{
-  char * rv = NULL;
-  char * mp = *stringp;
-  int n = strlen(mp);
-  if (n > 0) {
-     char * dp = (char *)memchr(mp,(int)((unsigned char)delim),n);
-     if (dp) {
-       int nc;
-       *stringp = dp+1;
-       nc = (int)((unsigned long)dp - (unsigned long)mp); 
-       rv = (char *) malloc(nc+1);
-       if (rv) {
-         memcpy(rv,mp,nc);
-         *(rv+nc) = '\0';
-       }
-     } else {
-       rv = (char *) malloc(n+1);
-       if (rv) {
-         memcpy(rv, mp, n);
-         *(rv+n) = '\0';
-         *stringp = mp + n;
-       }
-     }
-  }
-  return rv;
-}
-
-
-/* replaces strdup with ansi version */
-char * mystrdup(const char * s)
-{
-  char * d = NULL;
-  if (s) {
-     int sl = strlen(s)+1;
-     d = (char *) malloc(sl);
-     if (d) memcpy(d,s,sl);
-  }
-  return d;
-}
-
-
-/* remove cross-platform text line end characters */
-void mychomp(char * s)
-{
-  int k = strlen(s);
-  if ((k > 0) && ((*(s+k-1)=='\r') || (*(s+k-1)=='\n'))) *(s+k-1) = '\0';
-  if ((k > 1) && (*(s+k-2) == '\r')) *(s+k-2) = '\0';
-}
-
-
-/* convert null terminated string to all caps using encoding  */
-void enmkallcap(char * d, const char * p, const char * encoding)
-{
-  struct cs_info * csconv = get_current_cs(encoding);
-  while (*p != '\0') { 
-    *d++ = csconv[((unsigned char) *p)].cupper;
-    p++;
-  }
-  *d = '\0';
-}
-
+static struct cs_info * get_current_cs(const char * es);
 
 /* convert null terminated string to all little using encoding */
 void enmkallsmall(char * d, const char * p, const char * encoding)
@@ -81,45 +21,6 @@ void enmkallsmall(char * d, const char * p, const char * encoding)
   }
   *d = '\0';
 }
-
-
-/* convert null terminated string to have initial capital using encoding */
-void enmkinitcap(char * d, const char * p, const char * encoding)
-{
-  struct cs_info * csconv = get_current_cs(encoding);
-  memcpy(d,p,(strlen(p)+1));
-  if (*p != '\0') *d= csconv[((unsigned char)*p)].cupper;
-}
-
-
-/* convert null terminated string to all caps */ 
-void mkallcap(char * p, const struct cs_info * csconv)
-{
-  while (*p != '\0') { 
-    *p = csconv[((unsigned char) *p)].cupper;
-    p++;
-  }
-}
-
-
-/* convert null terminated string to all little */
-void mkallsmall(char * p, const struct cs_info * csconv)
-{
-  while (*p != '\0') { 
-    *p = csconv[((unsigned char) *p)].clower;
-    p++;
-  }
-}
-
-
-/* convert null terminated string to have initial capital */
-void mkinitcap(char * p, const struct cs_info * csconv)
-{
-  if (*p != '\0') *p = csconv[((unsigned char)*p)].cupper;
-}
-
-
-
 
 /* these are simple character mappings for the  */
 /* encodings supported */
@@ -3494,6 +3395,10 @@ struct cs_info iso14_tbl[] = {
 { 0x00, 0xff, 0xff },
 };
 
+struct enc_entry {
+  const char * enc_name;
+  struct cs_info * cs_table;
+};
 
 static struct enc_entry encds[] = {
 {"ISO8859-1",iso1_tbl},
@@ -3512,7 +3417,7 @@ static struct enc_entry encds[] = {
 };
 
 
-struct cs_info * get_current_cs(const char * es) {
+static struct cs_info * get_current_cs(const char * es) {
   int i;
   struct cs_info * ccs = encds[0].cs_table;
   int n = sizeof(encds) / sizeof(encds[0]);
@@ -3523,40 +3428,3 @@ struct cs_info * get_current_cs(const char * es) {
   }
   return ccs;
 }
-
-
-
-struct lang_map lang2enc[] = {
-  {"ca","ISO8859-1"},
-  {"cs","ISO8859-2"},
-  {"da","ISO8859-1"},
-  {"de","ISO8859-1"},
-  {"el","ISO8859-7"},
-  {"en","ISO8859-1"},
-  {"es","ISO8859-1"},
-  {"fr","ISO8859-1"},
-  {"hr","ISO8859-2"},
-  {"hu","ISO8859-2"},
-  {"it","ISO8859-1"},
-  {"la","ISO8859-1"},
-  {"nl","ISO8859-1"},
-  {"pl","ISO8859-2"},
-  {"pt","ISO8859-1"},
-  {"sv","ISO8859-1"},
-  {"ru","KOI8-R"},
-};
-
-
-const char * get_default_enc(const char * lang) {
-  int i;
-  int n = sizeof(lang2enc) / sizeof(lang2enc[0]);
-  for (i = 0; i < n; i++) {
-    if (strcmp(lang,lang2enc[i].lang) == 0) {
-      return lang2enc[i].def_enc;
-    }
-  }
-  return NULL;
-}
-
-
-
