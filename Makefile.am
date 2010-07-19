@@ -8,7 +8,7 @@ noinst_HEADERS = hnjalloc.h
 
 noinst_PROGRAMS = substrings example
 substrings_SOURCES = substrings.c
-example_SOURCES = example.c csutil.c
+example_SOURCES = example.c
 example_LDADD = libhyphen.la
 
 bin_SCRIPTS = substrings.pl
@@ -18,7 +18,7 @@ hyphdir = $(datadir)/hyphen
 # use it if you can recreate hyph_en_US.dic from
 hyph_DATA = hyph_en_US.dic
 
-EXTRA_DIST = checkme.lst hyphen.tex tbhyphext.tex tbhyphext.sh csutil.h \
+EXTRA_DIST = checkme.lst hyphen.tex tbhyphext.tex tbhyphext.sh \
     README.compound README.hyphen README.nonstandard substrings.pl hyphen.patch \
     COPYING.MPL COPYING.LGPL hyph_en_US.dic README_hyph_en_US.txt lig.awk \
     ligpatch.txt ooopatch.sed

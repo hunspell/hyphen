@@ -1,3 +1,7 @@
+2010-07-19 Hyphen 2.6 release:
+  - maintainance release, fix all warnings, tidy up
+    make check with VALGRIND=memcheck, etc.
+
 2010-02-23 Hyphen 2.5 release:
   - add Unicode ligature support for correct hyphenmin calculation
     (ff, fi, fl, St, st are 1-character, ffi and ffl are 2-character length for

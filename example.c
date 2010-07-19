@@ -1,9 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #include "hyphen.h"
-#include "csutil.h"
 
 #define BUFSIZE 1000
 
@@ -128,11 +128,9 @@ main(int argc, char** argv)
        /* and hyphen information */
        lcword = (char *) malloc(k+1);
        hyphens = (char *)malloc(k+5);
-       if (dict->utf8) {
-         strcpy(lcword, buf);
-       } else {
-         enmkallsmall(lcword,buf,dict->cset);
-       }
+       /* basic ascii lower-case, not suitable for real-world usage*/
+       for (i = 0; i < k; ++i)
+         lcword[i] = tolower(buf[i]);
 
        /* first remove any trailing periods */
        n = k-1;
