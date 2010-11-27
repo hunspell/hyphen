@@ -67,6 +67,9 @@ struct _HyphenDict {
   char rhmin;    /* righthyphenmin: min. hyph. distance from the right side */
   char clhmin;   /* min. hyph. distance from the left compound boundary */
   char crhmin;   /* min. hyph. distance from the right compound boundary */
+  char * nohyphen; /* comma separated list of characters or character
+                    sequences with forbidden hyphenation */
+  int nohyphenl; /* count of elements in nohyphen */
   /* system variables */
   int num_states;
   char cset[MAX_NAME];

@@ -1,3 +1,11 @@
+2010-11-27 Hyphen 2.7 release:
+  - The new hyphenation problem of OpenOffice.org 3.2, related to its
+    modified word breaking of words with hyphen characters, can be fixed
+    with the new NOHYPHEN feature. Also it's possible to solve the similar old
+    problem with apostrophes. More information: README.compound.
+
+  - improved English dictionaries
+
 2010-08-10 Hyphen 2.6 release:
   - maintainance release, fix all warnings, tidy up
     make check with VALGRIND=memcheck, etc.

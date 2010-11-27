@@ -1,3 +1,13 @@
+2010-11-27 László Németh <nemeth at OOo>:
+        * hyphen.c: add NOHYPHEN feature
+        to handle special hyphenation at hyphens and apostrophes,
+        see README.compound
+
+        * tests/{rhmin, hyphen}: new test files
+
+        * ooopatch.sed. hyph_en_US.dic: replace and improve old hack
+          with NOHYPHEN
+
 2010-07-18 Caolán McNamara <cmc at OOo>:
 	* remove csutil.* as more trouble that its
 	worth for just the testsuite

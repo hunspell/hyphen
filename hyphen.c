@@ -285,6 +285,8 @@ for (k = 0; k == 0 || (k == 1 && nextlevel); k++) {
   dict[k]->rhmin = 0;
   dict[k]->clhmin = 0;
   dict[k]->crhmin = 0;
+  dict[k]->nohyphen = NULL;
+  dict[k]->nohyphenl = 0;
 
   /* read in character set info */
   if (k == 0) {
@@ -320,6 +322,21 @@ for (k = 0; k == 0 || (k == 1 && nextlevel); k++) {
 	    continue;
 	  } else if (strncmp(buf, "COMPOUNDRIGHTHYPHENMIN", 22) == 0) {
 	    dict[k]->crhmin = atoi(buf + 22);
+	    continue;
+	  } else if (strncmp(buf, "NOHYPHEN", 8) == 0) {
+	    char * space = buf + 8;
+	    while (*space != '\0' && (*space == ' ' || *space == '\t')) space++;
+	    if (*buf != '\0') dict[k]->nohyphen = hnj_strdup(space);
+	    if (dict[k]->nohyphen) {
+	        char * nhe = dict[k]->nohyphen + strlen(dict[k]->nohyphen) - 1;
+	        *nhe = 0;
+	        for (nhe = nhe - 1; nhe > dict[k]->nohyphen; nhe--) {
+	                if (*nhe == ',') {
+	                    dict[k]->nohyphenl++;
+	                    *nhe = 0;
+	                }
+	        }
+	    }
 	    continue;
 	  } 
 	  j = 0;
@@ -482,6 +499,8 @@ void hnj_hyphen_free (HyphenDict *dict)
 	hnj_free (hstate->trans);
     }
   if (dict->nextlevel) hnj_hyphen_free(dict->nextlevel);
+
+  if (dict->nohyphen) hnj_free(dict->nohyphen);
 
   hnj_free (dict->states);
 
@@ -1050,6 +1069,22 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
     hyphens, rep, pos, cut, (dict->lhmin > 0 ? dict->lhmin : 2));
   hnj_hyphen_rhmin(dict->utf8, word, word_size,
     hyphens, rep, pos, cut, (dict->rhmin > 0 ? dict->rhmin : 2));
+
+  /* nohyphen */
+  if (dict->nohyphen) {
+    char * nh = dict->nohyphen;
+    int nhi;
+    for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
+        char * nhy = (char *) strstr(word, nh);
+        while (nhy) {
+            hyphens[nhy - word + strlen(nh) - 1] = 0;
+            hyphens[nhy - word - 1] = 0;
+            nhy = (char *) strstr(nhy + 1, nh);
+        }
+        nh = nh + strlen(nh) + 1;
+    }
+  }
+
   if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
   if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
   return 0;
@@ -1070,6 +1105,22 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
   hnj_hyphen_rhmin(dict->utf8, word, word_size, hyphens,
     rep, pos, cut, (rhmin > 0 ? rhmin : 2));
   if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
+
+  /* nohyphen */
+  if (dict->nohyphen) {
+    char * nh = dict->nohyphen;
+    int nhi;
+    for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
+        char * nhy = (char *) strstr(word, nh);
+        while (nhy) {
+            hyphens[nhy - word + strlen(nh) - 1] = 0;
+            hyphens[nhy - word - 1] = 0;
+            nhy = (char *) strstr(nhy + 1, nh);
+        }
+        nh = nh + strlen(nh) + 1;
+    }
+  }
+
   if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
   return 0;
 }
