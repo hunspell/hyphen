@@ -1078,7 +1078,7 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
         char * nhy = (char *) strstr(word, nh);
         while (nhy) {
             hyphens[nhy - word + strlen(nh) - 1] = 0;
-            hyphens[nhy - word - 1] = 0;
+            if (nhy - word  - 1 >= 0) hyphens[nhy - word - 1] = 0;
             nhy = (char *) strstr(nhy + 1, nh);
         }
         nh = nh + strlen(nh) + 1;
@@ -1114,7 +1114,7 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
         char * nhy = (char *) strstr(word, nh);
         while (nhy) {
             hyphens[nhy - word + strlen(nh) - 1] = 0;
-            hyphens[nhy - word - 1] = 0;
+            if (nhy - word  - 1 >= 0) hyphens[nhy - word - 1] = 0;
             nhy = (char *) strstr(nhy + 1, nh);
         }
         nh = nh + strlen(nh) + 1;

@@ -1,3 +1,5 @@
+2010-12-01 Hyphen 2,7,1 bug fix release
+
 2010-11-27 Hyphen 2.7 release:
   - The new hyphenation problem of OpenOffice.org 3.2, related to its
     modified word breaking of words with hyphen characters, can be fixed

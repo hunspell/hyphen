@@ -1,3 +1,7 @@
+2010-12-01 László Németh <nemeth at OOo>:
+        * hyphen.c: NOHYPHEN fix for a special case (NOHYPHEN
+          character in starting position, eg. "-example")
+
 2010-11-27 László Németh <nemeth at OOo>:
         * hyphen.c: add NOHYPHEN feature
         to handle special hyphenation at hyphens and apostrophes,
