@@ -1,3 +1,6 @@
+2012-06-29 Hyphen 2.8.4:
+  - coverity warnings
+
 2011-10-10 Hyphen 2.8.3:
   - fix NOHYPHEN
   - fix unbalanced hyphenation of LibreOffice/OOo

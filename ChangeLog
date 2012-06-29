@@ -1,3 +1,6 @@
+2010-07-18 Caolán McNamara <caolán at redhat dot com>:
+	* coverity warnings
+
 2011-10-10 László Németh <nemeth at numbertext dot org>:
 	* hyphen.c:
 	- fix NOHYPHEN (hyphenation vector

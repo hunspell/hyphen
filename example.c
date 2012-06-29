@@ -127,16 +127,19 @@ main(int argc, char** argv)
   /* now read each word from the wtc file */
     while(fgets(buf,BUFSIZE,wtclst) != NULL) {
        k = strlen(buf);
-       if (buf[k - 1] == '\n') buf[k - 1] = '\0';
-       if (*buf && buf[k - 2] == '\r') buf[k-- - 2] = '\0';
+       if (k && buf[k - 1] == '\n') buf[k - 1] = '\0';
+       if (k >=2 && buf[k - 2] == '\r') buf[k-- - 2] = '\0';
 
        /* set aside some buffers to hold lower cased */
        /* and hyphen information */
        lcword = (char *) malloc(k+1);
        hyphens = (char *)malloc(k+5);
        /* basic ascii lower-case, not suitable for real-world usage*/
-       for (i = 0; i < k; ++i)
-         lcword[i] = tolower(buf[i]);
+       for (i = 0; i < k; ++i) {
+         lcword[i] = buf[i];
+         if ( (lcword[i] >= 'A') && (lcword[i] <= 'Z') )
+           lcword[i] += 32;
+       }
 
        /* first remove any trailing periods */
        n = k-1;

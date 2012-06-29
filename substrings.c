@@ -163,16 +163,14 @@ static char *combine(
   return expr;
 }
 
+static char *pattab_key[MAXPATHS];
+static char *pattab_val[MAXPATHS];
+static char *newpattab_key[MAXPATHS];
+static char *newpattab_val[MAXPATHS];
 
-//
-//
 int main(int argc, const char* argv[]) {
   FILE *in, *out;
-  char *pattab_key[MAXPATHS];
-  char *pattab_val[MAXPATHS];
   int   patterns = 0;
-  char *newpattab_key[MAXPATHS];
-  char *newpattab_val[MAXPATHS];
   int   newpatterns = 0;
   char format[132]; // 64+65+newline+zero+spare
   int p;
