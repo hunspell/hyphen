@@ -7,12 +7,14 @@ if [ "$VALGRIND" != "" ]; then
     if ! grep -q 'ERROR SUMMARY: 0 error' $log; then
         echo "Fail in $NAME $1 checking detected by Valgrind"
         echo "$log Valgrind log file moved to $TEMPDIR/badlogs"
+	cat $log
         mv $log $TEMPDIR/badlogs
         exit 1
     fi
     if grep -q 'LEAK SUMMARY' $log; then
         echo "Memory leak in $NAME $1 checking detected by Valgrind"
         echo "$log Valgrind log file moved to $TEMPDIR/badlogs"
+	cat $log
         mv $log $TEMPDIR/badlogs
         exit 1
     fi    
