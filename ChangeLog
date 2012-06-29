@@ -1,16 +1,49 @@
+2011-10-10 László Németh <nemeth at numbertext dot org>:
+	* hyphen.c:
+	- fix NOHYPHEN (hyphenation vector
+	  modified by 0 instead of '0')
+	- fix non-balanced hyphenation of LibreOffice/OOo 3.3 by
+	  1-1/=,1,1 alternative pattern (removing hyphen)
+	- set default COMPOUNDHYPHENMIN=3 at hyphen and apostrophes
+        - fix VERBOSE to support multilevel patterns
+
+	* example.c: new option: -n to print hyphenation vector
+
+2011-10-07 László Németh <nemeth at numbertext dot org>:
+	* hyphen.c: use explicite compoundhyphenmin values of the
+	  dictionary also for the implicite NOHYPHEN hyphenation
+
+2011-10-06 László Németh <nemeth at numbertext dot org>:
+	* hyphen.c: force minimal lefthyphenmin and righthyphenmin values
+	  of the dictionary
+
+2011-10-04 László Németh <nemeth at numbertext dot org>:
+	* hyphen.c: ignore leading and ending numbers (eg. fix
+	  hyphenation of words with manual or field-based
+	  indexes in LibreOffice/OpenOffice.org)
+	* tests/num.*: new test files
+	
+	* hyphen.c: default NOHYPHEN separators: hyphen and
+	  ASCII apostrophe + (only in UTF-8 encoding) endash (U+2013)
+	  and typographical apostrophe (U+2019): fix hyphenation of
+	  words with hyphens, n-dashes or apostrophes in LibreOffice/OOo.
+	* README.compound: description
+
+	* hyph_en_US.dic: remove explicite NOHYPHEN declaration
+
 2010-12-01 László Németh <nemeth at OOo>:
-        * hyphen.c: NOHYPHEN fix for a special case (NOHYPHEN
-          character in starting position, eg. "-example")
+	* hyphen.c: NOHYPHEN fix for a special case (NOHYPHEN
+	  character in starting position, eg. "-example")
 
 2010-11-27 László Németh <nemeth at OOo>:
-        * hyphen.c: add NOHYPHEN feature
-        to handle special hyphenation at hyphens and apostrophes,
-        see README.compound
+	* hyphen.c: add NOHYPHEN feature
+	  to handle special hyphenation at hyphens and apostrophes,
+	  see README.compound
 
-        * tests/{rhmin, hyphen}: new test files
+	* tests/{rhmin, hyphen}: new test files
 
-        * ooopatch.sed. hyph_en_US.dic: replace and improve old hack
-          with NOHYPHEN
+	* ooopatch.sed. hyph_en_US.dic: replace and improve old hack
+	  with NOHYPHEN
 
 2010-07-18 Caolán McNamara <cmc at OOo>:
 	* remove csutil.* as more trouble that its

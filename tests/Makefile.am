@@ -21,7 +21,8 @@ settings4.test \
 lhmin.test \
 rhmin.test \
 lig.test \
-hyphen.test
+hyphen.test \
+num.test
 
 distclean-local:
 	-rm -rf testSubDir
@@ -120,4 +121,8 @@ lig.word \
 hyphen.hyph \
 hyphen.pat \
 hyphen.test \
-hyphen.word
+hyphen.word \
+num.hyph \
+num.pat \
+num.test \
+num.word

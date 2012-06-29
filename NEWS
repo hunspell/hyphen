@@ -1,4 +1,28 @@
-2010-12-01 Hyphen 2,7,1 bug fix release
+2011-10-10 Hyphen 2.8.3:
+  - fix NOHYPHEN
+  - fix unbalanced hyphenation of LibreOffice/OOo
+  - set default COMPOUNDHYPHENMIN=3 at hyphens and apostrophes
+  - fix VERBOSE in hyphen.c
+  - new ./example option: -n to print hyphenation vector
+
+2011-10-07 Hyphen 2.8.2:
+  - fix for explicite COMPOUNDHYPHENMIN values
+
+2011-10-06 Hyphen 2.8.1:
+  - force minimal lefthyphenmin and righthyphenmin values of the dictionary
+    (eg. righthyphenmin=3 of English dictionaries in LibreOffice/OOo,
+    also the original TeX hyphenation patterns are correct only with this
+    righthyphenmin value).
+
+2011-10-04 Hyphen 2.8:
+  - Ignore leading and ending numbers (eg. manual/field based indexes
+    in LibreOffice/OOo)
+
+  - Fix LibreOffice/OpenOffice.org hyphenation errors at apostrophes and
+    hyphens, n-dashes with default NOHYPHEN separators.
+    Eg. *o'c=lock -> o'clock.
+
+2010-12-01 Hyphen 2.7.1 bug fix release
 
 2010-11-27 Hyphen 2.7 release:
   - The new hyphenation problem of OpenOffice.org 3.2, related to its

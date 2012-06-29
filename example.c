@@ -12,6 +12,7 @@ void help() {
     fprintf(stderr,"example [-d | -dd] hyphen_dictionary_file file_of_words_to_check\n");
     fprintf(stderr,"-o = use old algorithm (without non-standard hyphenation)\n");
     fprintf(stderr,"-d = hyphenation with listing of the possible hyphenations\n");
+    fprintf(stderr,"-n = print hyphenation vector\n");
 }
 
 /* get a pointer to the nth 8-bit or UTF-8 character of the word */
@@ -69,6 +70,7 @@ main(int argc, char** argv)
     char hword[BUFSIZE * 2];
     int arg = 1;
     int optd = 1;
+    int optn = 0;
     int optdd = 0;
     char ** rep;
     int * pos;
@@ -80,6 +82,10 @@ main(int argc, char** argv)
   if (argv[arg]) {
        if (strcmp(argv[arg], "-o") == 0) {
             optd = 0;
+            arg++;
+       }
+       if (strcmp(argv[arg], "-n") == 0) {
+            optn = 1;
             arg++;
        }
        if (argv[arg] && strcmp(argv[arg], "-d") == 0) {
@@ -152,6 +158,8 @@ main(int argc, char** argv)
              exit(1);
        }
 
+       if (optn) fprintf(stderr, "%s\n", hyphens); 
+
        if (!optd) {
          /* now backfill hyphens[] for any removed periods */
          for (c = n; c < k; c++) hyphens[c] = '0';
@@ -176,7 +184,6 @@ main(int argc, char** argv)
          fflush(stdout);
          free(hyphword);
       } else {
-/*         fprintf(stderr, "vasz: %s", hyphens); */
          fprintf(stdout,"%s\n", hword);
 
 

@@ -6,12 +6,11 @@ and http://packages.debian.org/unstable/source/libhnj
 
 This subset of Libhnj was extended by
 Peter Novodvorsky <nidd at alt-linux dot org> (OOo integration),
-László Németh <nemeth at OOo> (non-standard and compound hyphenation
-with Unicode support),
+László Németh <nemeth at numbertext dot org> (non-standard and compound
+hyphenation with Unicode support),
 Nanning Buitenhuis <nanning at elvenkind dot com> (substrings.c)
 
-Write bug reports to László Németh or to the lingu-dev mailing list of
-OpenOffice.org (after subscription: http://lingucomponent.openoffice.org)
+Write bug reports to László Németh or in the bug tracker of hunspell.sf.net.
 
 ---
 Please contact Raph Levien for information about licensing for
