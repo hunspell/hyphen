@@ -951,7 +951,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
      rep2 = hnj_malloc (word_size * sizeof(char *));
      pos2 = hnj_malloc (word_size * sizeof(int));
      cut2 = hnj_malloc (word_size * sizeof(int));
-     hyphens2 = hnj_malloc (word_size);
+     hyphens2 = hnj_malloc (word_size + 3);
      for (i = 0; i < word_size; i++) rep2[i] = NULL;
      for (i = 0; i < word_size; i++) if 
         (hyphens[i]&1 || (begin > 0 && i + 1 == word_size)) {
