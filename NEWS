@@ -1,3 +1,6 @@
+2012-07-12 Hyphen 2.8.5:
+  - fix short alloc
+
 2012-06-29 Hyphen 2.8.4:
   - coverity warnings
 
