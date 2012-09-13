@@ -1,3 +1,8 @@
+2012-09-13 Hyphen 2.8.6:
+  - righthyphenmin fix for 3-byte or more UTF-8
+    multibyte characters by Steven Dickson
+  - fix for fdo#43931 (removing hard hyphen hyphenation for LibreOffice)
+
 2012-07-12 Hyphen 2.8.5:
   - fix short alloc
 

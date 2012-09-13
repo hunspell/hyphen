@@ -436,9 +436,9 @@ for (k = 0; k < 2; k++) {
     }
   } else if (k == 1) {
     /* default first level: hyphen and ASCII apostrophe */
-    if (!dict[0]->utf8) hnj_hyphen_load_line("NOHYPHEN '\n", dict[k], hashtab);
-    else hnj_hyphen_load_line("NOHYPHEN ',\xe2\x80\x93,\xe2\x80\x99\n", dict[k], hashtab);
-    strncpy(buf, "1-1/=,1,1\n", MAX_CHARS-1); // buf rewritten by hnj_hyphen_load here
+    if (!dict[0]->utf8) hnj_hyphen_load_line("NOHYPHEN ',-\n", dict[k], hashtab);
+    else hnj_hyphen_load_line("NOHYPHEN ',\xe2\x80\x93,\xe2\x80\x99,-\n", dict[k], hashtab);
+    strncpy(buf, "1-1\n", MAX_CHARS-1); // buf rewritten by hnj_hyphen_load here
     buf[MAX_CHARS-1] = '\0';
     hnj_hyphen_load_line(buf, dict[k], hashtab); /* remove hyphen */
     hnj_hyphen_load_line("1'1\n", dict[k], hashtab); /* ASCII apostrophe */
@@ -734,13 +734,13 @@ int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
 int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
 	char *** rep, int ** pos, int ** cut, int rhmin)
 {
-    int i = 1;
+    int i = 0;
     int j;
 
     // ignore numbers
     for (j = word_size - 1; j > 0 && word[j] <= '9' && word[j] >= '0'; j--) i--;
 
-    for (j = word_size - 2; i < rhmin && j > 0; j--) {
+    for (j = word_size - 1; i < rhmin && j > 0; j--) {
       // check length of the non-standard part
       if (*rep && *pos && *cut && (*rep)[j]) {
         char * rh = strchr((*rep)[j], '=');
@@ -753,7 +753,7 @@ int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
        } else {
          hyphens[j] = '0';
        }
-       if (!utf8 || (word[j] & 0xc0) != 0xc0) i++;
+       if (!utf8 || (word[j] & 0xc0) == 0xc0 || (word[j] & 0x80) != 0x80) i++;
     }
     return 0;
 }
