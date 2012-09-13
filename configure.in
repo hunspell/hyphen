@@ -1,5 +1,5 @@
-AC_INIT([hyphen],[2.8.5],[nemeth@numbertext.org])
-AM_INIT_AUTOMAKE(hyphen,2.8.5)
+AC_INIT([hyphen],[2.8.6],[nemeth@numbertext.org])
+AM_INIT_AUTOMAKE(hyphen,2.8.6)
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
