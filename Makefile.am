@@ -2,7 +2,7 @@ SUBDIRS= doc tests
 
 lib_LTLIBRARIES = libhyphen.la
 libhyphen_la_SOURCES = hnjalloc.c hyphen.c
-libhyphen_la_LDFLAGS = -version-info 2:1:2
+libhyphen_la_LDFLAGS = -version-info 3:0:3
 include_HEADERS = hyphen.h
 noinst_HEADERS = hnjalloc.h
 

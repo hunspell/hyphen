@@ -1,3 +1,9 @@
+2013-03-18 László Németh <nemeth at numbertext dot org>:
+	* Makefile.am, Makefile.in: set -version-info
+
+2013-03-12 Paweł Hajdan <phajdan at google>:
+	* hyphen.h, hyphen.c: add hnj_hyphen_load_file() for sandboxing
+
 2012-09-13 László Németh <nemeth at numbertext dot org>:
 	* hyphen.c: fdo#43931: removing hard hyphen hyphenation for LibreOffice
 	

@@ -374,19 +374,28 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 HyphenDict *
 hnj_hyphen_load (const char *fn)
 {
+  HyphenDict *result;
+  FILE *f;
+  f = fopen (fn, "r");
+  if (f == NULL)
+    return NULL;
+
+  result = hnj_hyphen_load_file(f);
+
+  fclose(f);
+  return result;
+}
+
+HyphenDict *
+hnj_hyphen_load_file (FILE *f)
+{
   HyphenDict *dict[2];
   HashTab *hashtab;
-  FILE *f;
   char buf[MAX_CHARS];
   int nextlevel = 0;
   int i, j, k;
   HashEntry *e;
   int state_num = 0;
-
-  f = fopen (fn, "r");
-  if (f == NULL)
-    return NULL;
-
 // loading one or two dictionaries (separated by NEXTLEVEL keyword)
 for (k = 0; k < 2; k++) { 
   hashtab = hnj_hash_new ();
@@ -497,7 +506,6 @@ for (k = 0; k < 2; k++) {
 #endif
   state_num = 0;
 }
-  fclose(f);
   if (nextlevel) dict[0]->nextlevel = dict[1];
   else {
     dict[1] -> nextlevel = dict[0];
