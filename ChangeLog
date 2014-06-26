@@ -1,3 +1,6 @@
+2014-06-26 Caolán McNamara <caolán at redhat dot com>:
+	* clang scan-build warnings
+
 2013-03-18 László Németh <nemeth at numbertext dot org>:
 	* Makefile.am, Makefile.in: set -version-info
 

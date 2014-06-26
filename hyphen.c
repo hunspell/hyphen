@@ -360,7 +360,7 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
           }
 
 	  /* now, put in the prefix transitions */
-          for (; found < 0 ;j--)
+          for (; found < 0 && j > 0; --j)
 	    {
 	      last_state = state_num;
 	      ch = word[j - 1];

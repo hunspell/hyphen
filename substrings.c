@@ -200,7 +200,6 @@ int main(int argc, const char* argv[]) {
         if (c<'0' || c>'9') pat[j++]=c;
       }
       pat[j]=0;
-      p = patterns;
       pattab_key[patterns]   = pat;
       pattab_val[patterns++] = org;
       if (patterns>MAXPATHS) die("to many base patterns");
