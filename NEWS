@@ -1,3 +1,6 @@
+2014-06-27 Hyphen 2.8.7:
+  - various clang scan-build warning fixes
+
 2012-09-13 Hyphen 2.8.6:
   - righthyphenmin fix for 3-byte or more UTF-8
     multibyte characters by Steven Dickson
