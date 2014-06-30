@@ -1,3 +1,7 @@
+2014-06-30 Rene Engelhard <rene at rene - engelhard dot de>:
+	* add missing stdio.h to hyphen.h, reported by David Suárez
+	  in deb#753218.
+
 2014-06-26 Caolán McNamara <caolán at redhat dot com>:
 	* clang scan-build warnings
 

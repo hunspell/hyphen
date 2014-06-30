@@ -55,6 +55,8 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#include <stdio.h>
+
 typedef struct _HyphenDict HyphenDict;
 typedef struct _HyphenState HyphenState;
 typedef struct _HyphenTrans HyphenTrans;
