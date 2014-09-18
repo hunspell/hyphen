@@ -202,7 +202,7 @@ int main(int argc, const char* argv[]) {
       pat[j]=0;
       pattab_key[patterns]   = pat;
       pattab_val[patterns++] = org;
-      if (patterns>MAXPATHS) die("to many base patterns");
+      if (patterns>=MAXPATHS) die("to many base patterns");
     }
   }
   fclose(in);

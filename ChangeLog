@@ -1,3 +1,6 @@
+2014-09-18 Caolán McNamara <caolán at redhat dot com>:
+	* coverity#58283 now 0 coverity warnings
+
 2014-06-30 Rene Engelhard <rene at rene - engelhard dot de>:
 	* add missing stdio.h to hyphen.h, reported by David Suárez
 	  in deb#753218.
