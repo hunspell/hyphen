@@ -328,7 +328,7 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
             if (dict->utf8) {
                 int pu = -1;        /* unicode character position */
                 int ps = -1;        /* unicode start position (original replindex) */
-                int pc = (*word == '.') ? 1: 0; /* 8-bit character position */
+                size_t pc = (*word == '.') ? 1: 0; /* 8-bit character position */
                 for (; pc < (strlen(word) + 1); pc++) {
                 /* beginning of an UTF-8 character (not '10' start bits) */
                     if ((((unsigned char) word[pc]) >> 6) != 2) pu++;
