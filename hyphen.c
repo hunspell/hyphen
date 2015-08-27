@@ -963,7 +963,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
      for (i = 0; i < word_size; i++) rep2[i] = NULL;
      for (i = 0; i < word_size; i++) if 
         (hyphens[i]&1 || (begin > 0 && i + 1 == word_size)) {
-        if (i - begin > 1) {
+        if (i - begin > 0) {
             int hyph = 0;
             prep_word[i + 2] = '\0';
             /* non-standard hyphenation at compound boundary (Schiffahrt) */
@@ -980,7 +980,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
             hnj_hyphen_hyph_(dict, prep_word + begin + 1, i - begin + 1 + hyph,
                 hyphens2, &rep2, &pos2, &cut2, clhmin,
                 crhmin, (begin > 0 ? 0 : lend), (hyphens[i]&1 ? 0 : rend));
-            for (j = 0; j < i - begin - 1; j++) {
+            for (j = 0; j < i - begin; j++) {
                 hyphens[begin + j] = hyphens2[j];
                 if (rep2[j] && rep && pos && cut) {
                     if (!*rep && !*pos && !*cut) {
