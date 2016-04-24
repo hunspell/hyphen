@@ -15,6 +15,7 @@
 /doc/Makefile
 /doc/Makefile.in
 /example
+/example.exe
 /example.o
 /hnjalloc.lo
 /hnjalloc.o
@@ -30,6 +31,7 @@
 /ltmain.sh
 /missing
 /substrings
+/substrings.exe
 /substrings.o
 /test-driver
 /tests/*.log
