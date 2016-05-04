@@ -25,74 +25,74 @@ while (<HYPH>)
 {
     $pat =~ s/%.*$//g;
     if (/^\%/) {
-	#comment, ignore
+        #comment, ignore
     } elsif (/^(.+)\/([^,]+),([0-9]+),([0-9]+)$/) {
         $origpat = $1;
-	$pat = $1;
+        $pat = $1;
         $repl = $2;
         $beg = $3;
         $len = $4;
-	$pat =~ s/\d//g;
+        $pat =~ s/\d//g;
         if ($origpat eq $pat) {
             print "error - missing hyphenation point: $_";
             exit 1;
         }
-	push @patlist, $pat;
-	$pattab{$pat} = $origpat;
+        push @patlist, $pat;
+        $pattab{$pat} = $origpat;
         $repltab{$pat} = $repl;
         $replbeg{$pat} = $beg - 1;
         $repllen{$pat} = $len;
     } elsif (/^(.+)\/(.+)$/) {
         $origpat = $1;
-	$pat = $1;
+        $pat = $1;
         $repl = $2;
-	$pat =~ s/\d//g;
+        $pat =~ s/\d//g;
         if ($origpat eq $pat) {
             print "error - missing hyphenation point: $_";
             exit 1;
         }
-	push @patlist, $pat;
-	$pattab{$pat} = $origpat;
+        push @patlist, $pat;
+        $pattab{$pat} = $origpat;
         $repltab{$pat} = $repl;
         $replbeg{$pat} = 0;
         $repllen{$pat} = enclen($pat);
     } elsif (/^(.+)$/) {
-	$origpat = $1;
-	$pat = $1;
-	$pat =~ s/\d//g;
-	push @patlist, $pat;
-	$pattab{$pat} = $origpat;
+        $origpat = $1;
+        $pat = $1;
+        $pat =~ s/\d//g;
+        push @patlist, $pat;
+        $pattab{$pat} = $origpat;
     }
 }
 
 foreach $pat (@patlist) {
     $patsize = length $pat;
     for $i (0..$patsize - 1) {
-	for $j (1..$patsize - $i) {
-	    $subpat = substr ($pat, $i, $j);
-	    if (defined $pattab{$subpat}) {
-		print "$pattab{$subpat} is embedded in $pattab{$pat}\n";
-		$newpat = substr $pat, 0, $i + $j;
-		if (!defined $newpattab{$newpat}) {
-		    $newpattab{$newpat} =
-			substr ($pat, 0, $i).$pattab{$subpat};
-		    $ss = substr $pat, 0, $i;
-		    print "$ss+$pattab{$subpat}\n";
-		    push @newpatlist, $newpat;
-		    if (defined $repltab{$subpat}) {
+        for $j (1..$patsize - $i) {
+            $subpat = substr ($pat, $i, $j);
+            if (defined $pattab{$subpat}) {
+                print "$pattab{$subpat} is embedded in $pattab{$pat}\n";
+                $newpat = substr $pat, 0, $i + $j;
+                if (!defined $newpattab{$newpat}) {
+                    $newpattab{$newpat} =
+                        substr ($pat, 0, $i).$pattab{$subpat};
+                    $ss = substr $pat, 0, $i;
+                    print "$ss+$pattab{$subpat}\n";
+                    push @newpatlist, $newpat;
+                    if (defined $repltab{$subpat}) {
                         $begcorr = (($pat =~ /^[.]/) && !($subpat =~ /^[.]/)) ? 1 : 0;
                         $newrepltab{$newpat} = $repltab{$subpat};
                         $newreplbeg{$newpat} = $replbeg{$subpat} + enclen($ss) - $begcorr;
                         $newrepllen{$newpat} = $repllen{$subpat};
                     }
-		} else {
-		    $tmp =  $newpattab{$newpat};
-		    $newpattab{$newpat} =
-			combine ($newpattab{$newpat}, $pattab{$subpat});
-		    print "$tmp + $pattab{$subpat} -> $newpattab{$newpat}\n";
-		}
-	    }
-	}
+                } else {
+                    $tmp =  $newpattab{$newpat};
+                    $newpattab{$newpat} =
+                        combine ($newpattab{$newpat}, $pattab{$subpat});
+                    print "$tmp + $pattab{$subpat} -> $newpattab{$newpat}\n";
+                }
+            }
+        }
     }
 }
 
@@ -111,14 +111,14 @@ sub expand {
     my @exp = ();
 
     foreach $c (split (//, $pat)) {
-	if ($last =~ /[\D]/ && $c =~ /[\D]/) {
-	    push @exp, 0;
-	}
-	push @exp, $c;
-	$last = $c;
+        if ($last =~ /[\D]/ && $c =~ /[\D]/) {
+            push @exp, 0;
+        }
+        push @exp, $c;
+        $last = $c;
     }
     if ($last =~ /[\D]/) {
-	push @exp, 0;
+        push @exp, 0;
     }
     return @exp;
 }
@@ -137,20 +137,20 @@ sub combine {
     $begcorr = ($pat1 =~ /^[.]/) ? 1 : 0;
 
     for $i (0..length ($pat1) - length ($pat2)) {
-	if (substr ($pat1, $i, length $pat2) eq $subpat) {
-	    for ($j = 0; $j < @subexp; $j += 2) {
-		if ($subexp[$j] > $exp[2 * $i + $j]) {
-		    $exp[2 * $i + $j] = $subexp[$j];
+        if (substr ($pat1, $i, length $pat2) eq $subpat) {
+            for ($j = 0; $j < @subexp; $j += 2) {
+                if ($subexp[$j] > $exp[2 * $i + $j]) {
+                    $exp[2 * $i + $j] = $subexp[$j];
                     if (defined $newrepltab{$pat2} && !defined $newrepltab{$pat1}) {
                         $ss = substr ($pat1, 0, $i);
                         $newrepltab{$pat1} = $newrepltab{$pat2};
                         $newreplbeg{$pat1} = $newreplbeg{$pat2} + enclen($ss) - $begcorr;
                         $newrepllen{$pat1} = $newrepllen{$pat2};
                     }
-		}
-	    }
-	    print ("$pat1 includes $pat2 at pos $i\n");
-	}
+                }
+            }
+            print ("$pat1 includes $pat2 at pos $i\n");
+        }
     }
     return join ('', map { $_ eq '0' ? () : $_ } @exp);
 }
