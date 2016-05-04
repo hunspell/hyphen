@@ -21,47 +21,61 @@ if (defined $encoding) { print OUT "$encoding\n"; }
 if (defined $lhmin) { print OUT "LEFTHYPHENMIN $lhmin\n"; }
 if (defined $rhmin) { print OUT "RIGHTHYPHENMIN $rhmin\n"; }
 
+# keep header
 while (<HYPH>)
 {
-    $pat =~ s/%.*$//g;
-    if (/^\%/) {
+    if (/^%/) {
+        print OUT "$_";
+    } else {
+        last;
+    }
+}
+
+while (<HYPH>)
+{
+    if (/^%/) {
         #comment, ignore
-    } elsif (/^(.+)\/([^,]+),([0-9]+),([0-9]+)$/) {
-        $origpat = $1;
-        $pat = $1;
-        $repl = $2;
-        $beg = $3;
-        $len = $4;
-        $pat =~ s/\d//g;
-        if ($origpat eq $pat) {
-            print "error - missing hyphenation point: $_";
-            exit 1;
+    } else {
+        $_ =~ s/%.*$//g;
+        for (split ' ', $_) {
+            if (/^(.+)\/([^,]+),([0-9]+),([0-9]+)$/) {
+                $origpat = $1;
+                $pat = $1;
+                $repl = $2;
+                $beg = $3;
+                $len = $4;
+                $pat =~ s/\d//g;
+                if ($origpat eq $pat) {
+                    print "error - missing hyphenation point: $_";
+                    exit 1;
+                }
+                push @patlist, $pat;
+                $pattab{$pat} = $origpat;
+                $repltab{$pat} = $repl;
+                $replbeg{$pat} = $beg - 1;
+                $repllen{$pat} = $len;
+            } elsif (/^(.+)\/(.+)$/) {
+                $origpat = $1;
+                $pat = $1;
+                $repl = $2;
+                $pat =~ s/\d//g;
+                if ($origpat eq $pat) {
+                    print "error - missing hyphenation point: $_";
+                    exit 1;
+                }
+                push @patlist, $pat;
+                $pattab{$pat} = $origpat;
+                $repltab{$pat} = $repl;
+                $replbeg{$pat} = 0;
+                $repllen{$pat} = enclen($pat);
+            } elsif (/^(.+)$/) {
+                $origpat = $1;
+                $pat = $1;
+                $pat =~ s/\d//g;
+                push @patlist, $pat;
+                $pattab{$pat} = $origpat;
+            }
         }
-        push @patlist, $pat;
-        $pattab{$pat} = $origpat;
-        $repltab{$pat} = $repl;
-        $replbeg{$pat} = $beg - 1;
-        $repllen{$pat} = $len;
-    } elsif (/^(.+)\/(.+)$/) {
-        $origpat = $1;
-        $pat = $1;
-        $repl = $2;
-        $pat =~ s/\d//g;
-        if ($origpat eq $pat) {
-            print "error - missing hyphenation point: $_";
-            exit 1;
-        }
-        push @patlist, $pat;
-        $pattab{$pat} = $origpat;
-        $repltab{$pat} = $repl;
-        $replbeg{$pat} = 0;
-        $repllen{$pat} = enclen($pat);
-    } elsif (/^(.+)$/) {
-        $origpat = $1;
-        $pat = $1;
-        $pat =~ s/\d//g;
-        push @patlist, $pat;
-        $pattab{$pat} = $origpat;
     }
 }
 
