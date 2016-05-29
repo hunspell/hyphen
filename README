@@ -48,6 +48,7 @@ tbhyphext.tex: hyphenation exception log from TugBoat archive
 
 INSTALLATION
 
+autoreconf -fvi
 ./configure
 make
 make install
