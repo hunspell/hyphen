@@ -134,3 +134,10 @@ num.hyph \
 num.pat \
 num.test \
 num.word
+
+check-am: ../example
+../example : ../example.exe
+	echo '#! /bin/sh' > $@
+	echo '# Wrapper for example.exe' >> $@
+	echo 'wine `dirname "$$0"`/example.exe "$$@" |dos2unix' >> $@
+	chmod +x $@
