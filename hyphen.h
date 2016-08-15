@@ -10,7 +10,7 @@
  * to use it in OpenOffice.org.
  *
  * Non-standard and compound word hyphenation support by László Németh.
- * 
+ *
  * License is the original LibHnj license:
  *
  * LibHnj is dual licensed under LGPL and MPL. Boilerplate for both
@@ -31,8 +31,8 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the 
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330, 
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA  02111-1307  USA.
 */
 
@@ -97,6 +97,7 @@ struct _HyphenTrans {
 
 HyphenDict *hnj_hyphen_load (const char *fn);
 HyphenDict *hnj_hyphen_load_file (FILE *f);
+HyphenDict *hnj_hyphen_load_data (const char *fdata, size_t flen);
 void hnj_hyphen_free (HyphenDict *dict);
 
 /* obsolete, use hnj_hyphen_hyphenate2() or *hyphenate3() functions) */
@@ -110,11 +111,11 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
 
  (It supports Catalan, Dutch, German, Hungarian, Norwegian, Swedish
   etc. orthography, see documentation.)
- 
+
  input data:
  word:      input word
  word_size: byte length of the input word
- 
+
  hyphens:   allocated character buffer (size = word_size + 5)
  hyphenated_word: allocated character buffer (size ~ word_size * 2) or NULL
  rep, pos, cut: pointers (point to the allocated and _zeroed_ buffers
@@ -147,7 +148,7 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
  int * cut = NULL;
  char hyphens[MAXWORDLEN];
  hnj_hyphen_hyphenate2(dict, "example", 7, hyphens, NULL, &rep, &pos, &cut);
- 
+
  See example in the source distribution.
 
 */
