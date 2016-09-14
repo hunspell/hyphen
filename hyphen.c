@@ -396,7 +396,7 @@ hnj_hyphen_load_file (FILE *f)
   int i, j, k;
   HashEntry *e;
   int state_num = 0;
-// loading one or two dictionaries (separated by NEXTLEVEL keyword)
+/* loading one or two dictionaries (separated by NEXTLEVEL keyword) */
 for (k = 0; k < 2; k++) { 
   hashtab = hnj_hash_new ();
 #ifdef VERBOSE
@@ -447,7 +447,7 @@ for (k = 0; k < 2; k++) {
     /* default first level: hyphen and ASCII apostrophe */
     if (!dict[0]->utf8) hnj_hyphen_load_line("NOHYPHEN ',-\n", dict[k], hashtab);
     else hnj_hyphen_load_line("NOHYPHEN ',\xe2\x80\x93,\xe2\x80\x99,-\n", dict[k], hashtab);
-    strncpy(buf, "1-1\n", MAX_CHARS-1); // buf rewritten by hnj_hyphen_load here
+    strncpy(buf, "1-1\n", MAX_CHARS-1); /* buf rewritten by hnj_hyphen_load here */
     buf[MAX_CHARS-1] = '\0';
     hnj_hyphen_load_line(buf, dict[k], hashtab); /* remove hyphen */
     hnj_hyphen_load_line("1'1\n", dict[k], hashtab); /* ASCII apostrophe */
@@ -694,7 +694,7 @@ int hnj_hyphen_strnlen(const char * word, int n, int utf8)
     int j = 0;
     while (j < n && word[j] != '\0') {
       i++;
-      // Unicode ligature support
+      /* Unicode ligature support */
       if (utf8 && ((unsigned char) word[j] == 0xEF) && ((unsigned char) word[j + 1] == 0xAC))  {
         i += hnj_ligature(word[j + 2]);
       }
@@ -708,16 +708,16 @@ int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
 {
     int i = 1, j;
 
-    // Unicode ligature support
+    /* Unicode ligature support */
     if (utf8 && ((unsigned char) word[0] == 0xEF) && ((unsigned char) word[1] == 0xAC))  {
       i += hnj_ligature(word[2]);
     }
 
-    // ignore numbers
+    /* ignore numbers */
     for (j = 0; word[j] <= '9' && word[j] >= '0'; j++) i--;
 
     for (j = 0; i < lhmin && word[j] != '\0'; i++) do {
-      // check length of the non-standard part
+      /* check length of the non-standard part */
       if (*rep && *pos && *cut && (*rep)[j]) {
         char * rh = strchr((*rep)[j], '=');
         if (rh && (hnj_hyphen_strnlen(word, j - (*pos)[j] + 1, utf8) +
@@ -731,7 +731,7 @@ int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
        }
        j++;
 
-       // Unicode ligature support
+       /* Unicode ligature support */
        if (utf8 && ((unsigned char) word[j] == 0xEF) && ((unsigned char) word[j + 1] == 0xAC))  {
          i += hnj_ligature(word[j + 2]);
        }
@@ -745,11 +745,11 @@ int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
     int i = 0;
     int j;
 
-    // ignore numbers
+    /* ignore numbers */
     for (j = word_size - 1; j > 0 && word[j] <= '9' && word[j] >= '0'; j--) i--;
 
     for (j = word_size - 1; i < rhmin && j > 0; j--) {
-      // check length of the non-standard part
+      /* check length of the non-standard part */
       if (*rep && *pos && *cut && (*rep)[j]) {
         char * rh = strchr((*rep)[j], '=');
         if (rh && (hnj_hyphen_strnlen(word + j - (*pos)[j] + (*cut)[j] + 1, 100, utf8) +
@@ -766,7 +766,7 @@ int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
     return 0;
 }
 
-// recursive function for compound level hyphenation
+/* recursive function for compound level hyphenation */
 int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
     char * hyphens, char *** rep, int ** pos, int ** cut,
     int clhmin, int crhmin, int lend, int rend)
@@ -948,7 +948,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
   hnj_free (matchlen);
   hnj_free (matchindex);
 
-  // recursive hyphenation of the first (compound) level segments
+  /* recursive hyphenation of the first (compound) level segments */
   if (dict->nextlevel) {
      char ** rep2;
      int * pos2;
@@ -1010,7 +1010,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
         for (j = 0; j < word_size; j++) rep2[j] = NULL;
      }
      
-     // non-compound
+     /* non-compound */
      if (begin == 0) {
         hnj_hyphen_hyph_(dict->nextlevel, word, word_size,
             hyphens, rep, pos, cut, clhmin, crhmin, lend, rend);
