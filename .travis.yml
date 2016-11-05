@@ -1,0 +1,18 @@
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+sudo: false
+
+os:
+  - linux
+  - osx
+
+install:
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install gawk; fi
+
+script:
+  - autoreconf --install --force --verbose && ./configure && make && make check
