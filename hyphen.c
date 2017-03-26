@@ -1076,17 +1076,20 @@ int hnj_hyphen_norm(const char *word, int word_size, char * hyphens,
 void hnj_hyphen_hyphword(const char * word, int l, const char * hyphens, 
     char * hyphword, char *** rep, int ** pos, int ** cut)
 {
-  int hyphenslen = l + 5;
+  /* hyphword buffer size must be at least 2 * l */
+  int hyphword_len = 2 * l - 1;
 
   int i, j;
-  for (i = 0, j = 0; i < l; i++, j++) {
+  for (i = 0, j = 0; i < l && j < hyphword_len; i++, j++) {
     if (hyphens[i]&1) {
       hyphword[j] = word[i];
       if (*rep && *pos && *cut && (*rep)[i]) {
-        size_t offset = j - (*pos)[i] + 1;
-        strncpy(hyphword + offset, (*rep)[i], hyphenslen - offset - 1);
-        hyphword[hyphenslen-1] = '\0';
-        j += strlen((*rep)[i]) - (*pos)[i];
+        j -= (*pos)[i] - 1;
+        size_t rep_len = strlen((*rep)[i]);
+        if (j + rep_len > hyphword_len)
+          break;
+        strcpy(hyphword + j, (*rep)[i]);
+        j += rep_len - 1;
         i += (*cut)[i] - (*pos)[i];
       } else hyphword[++j] = '=';
     } else hyphword[j] = word[i];
