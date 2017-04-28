@@ -10,6 +10,7 @@ alt3.test \
 alt4.test \
 alt5.test \
 alt6.test \
+alt7.test \
 compound.test \
 compound2.test \
 compound3.test \
@@ -46,6 +47,9 @@ alt5.word \
 alt6.hyph \
 alt6.pat \
 alt6.word \
+alt7.hyph \
+alt7.pat \
+alt7.word \
 alt.hyph \
 alt.pat \
 alt.word \
@@ -100,6 +104,7 @@ alt3.test \
 alt4.test \
 alt5.test \
 alt6.test \
+alt7.test \
 alt.test \
 basealt2.test \
 basealt.test \
