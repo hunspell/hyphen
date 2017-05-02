@@ -67,7 +67,7 @@ main(int argc, char** argv)
     char *hyphens;
     char *lcword;
     char *hyphword;
-    char hword[BUFSIZE * 2];
+    char *hword;
     int arg = 1;
     int optd = 1;
     int optn = 0;
@@ -151,12 +151,16 @@ main(int argc, char** argv)
        rep = NULL;
        pos = NULL;
        cut = NULL;
+        
+       /* set minimum required output buffer size (2 * word_size) */
+       hword = (char *) malloc((n-1)*2);
        hword[0] = '\0';
 
        if ((!optd && hnj_hyphen_hyphenate(dict, lcword, n-1, hyphens)) ||
 	    (optd && hnj_hyphen_hyphenate2(dict, lcword, n-1, hyphens, hword, &rep, &pos, &cut))) {
              free(hyphens);
              free(lcword);
+             free(hword);
              fprintf(stderr, "hyphenation error\n");
              exit(1);
        }
@@ -202,6 +206,7 @@ main(int argc, char** argv)
       }
       free(hyphens);
       free(lcword);
+      free(hword);
     }
 
     fclose(wtclst);
