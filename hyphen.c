@@ -444,6 +444,10 @@ for (k = 0; k < 2; k++) {
       if (!feof(f) && strchr(buf, '\n') == NULL) {
         int c;
         while ((c = fgetc(f)) != '\n' && c != EOF);
+        /* issue warning if not a comment */
+        if (buf[0] != '%') {
+          fprintf(stderr, "Warning: skipping too long pattern (more than %lu chars)\n", sizeof(buf));
+        }
         continue;
       }
       

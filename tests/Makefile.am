@@ -11,6 +11,7 @@ alt4.test \
 alt5.test \
 alt6.test \
 alt7.test \
+longlines.test \
 compound.test \
 compound2.test \
 compound3.test \
@@ -50,6 +51,9 @@ alt6.word \
 alt7.hyph \
 alt7.pat \
 alt7.word \
+longlines.hyph \
+longlines.pat \
+longlines.word \
 alt.hyph \
 alt.pat \
 alt.word \
@@ -105,6 +109,7 @@ alt4.test \
 alt5.test \
 alt6.test \
 alt7.test \
+longlines.test \
 alt.test \
 basealt2.test \
 basealt.test \
