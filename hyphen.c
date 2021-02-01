@@ -882,6 +882,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
       if (match)
 	{
 	  offset = i + 1 - strlen (match);
+	  if (offset < 0) offset = 0;	// happens with hyph_tr.dic
 #ifdef VERBOSE
 	  for (k = 0; k < offset; k++)
 	    putchar (' ');
