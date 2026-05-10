@@ -146,7 +146,7 @@ main(int argc, char** argv)
        while((n >=0) && (lcword[n] == '.')) n--;
        n++;
 
-       if (n <= 0) {
+       if (n <= 0 || n > BUFSIZE) {
          free(hyphens);
          free(lcword);
          continue;
