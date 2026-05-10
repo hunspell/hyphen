@@ -679,7 +679,7 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
 #endif
 	  /* This is a linear search because I tried a binary search and
 	     found it to be just a teeny bit slower. */
-	  for (k = 0; match[k]; k++)
+	  for (k = (offset < 0 ? -offset : 0); match[k]; k++)
 	    if (hyphens[offset + k] < match[k])
 	      hyphens[offset + k] = match[k];
 	}
@@ -917,16 +917,18 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                 matchrepl[isrepl] = NULL;
                 matchindex[isrepl] = -1;
             }
-            matchlen[offset + replindex] = replcut;
+            if (offset + replindex >= 0)
+                matchlen[offset + replindex] = replcut;
           }
 	  /* This is a linear search because I tried a binary search and
 	     found it to be just a teeny bit slower. */
-	  for (k = 0; match[k]; k++) {
+	  for (k = (offset < 0 ? -offset : 0); match[k]; k++) {
 	    if ((hyphens[offset + k] < match[k])) {
 	      hyphens[offset + k] = match[k];
               if (match[k]&1) {
                 matchrepl[offset + k] = repl;
-                if (repl && (k >= replindex) && (k <= replindex + replcut)) {
+                if (repl && (k >= replindex) && (k <= replindex + replcut)
+                    && offset + replindex >= 0) {
                     matchindex[offset + replindex] = offset + k;
                 }
               }
