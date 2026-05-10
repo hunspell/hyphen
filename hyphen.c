@@ -45,6 +45,11 @@
 #include <unistd.h> /* for exit */
 #endif
 
+#ifdef _WIN32
+#include <windows.h>
+#include <wchar.h>
+#endif
+
 #define noVERBOSE
 
 /* calculate hyphenmin values with long ligature length (2 or 3 characters
@@ -372,12 +377,32 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 	    }
 }
 
+FILE * hnj_fopen(const char * path, const char * mode) {
+#ifdef _WIN32
+#define WIN32_LONG_PATH_PREFIX "\\\\?\\"
+    if (strncmp(path, WIN32_LONG_PATH_PREFIX, 4) == 0) {
+        int len = MultiByteToWideChar(CP_UTF8, 0, path, -1, NULL, 0);
+        wchar_t *buff = (wchar_t *) malloc(len * sizeof(wchar_t));
+        wchar_t *buff2 = (wchar_t *) malloc(len * sizeof(wchar_t));
+        FILE * f = NULL;
+        MultiByteToWideChar(CP_UTF8, 0, path, -1, buff, len);
+        if (_wfullpath( buff2, buff, len ) != NULL) {
+          f = _wfopen(buff2, (strcmp(mode, "r") == 0) ? L"r" : L"rb");
+        }
+        free(buff);
+        free(buff2);
+        return f;
+    }
+#endif
+    return fopen(path, mode);
+}
+
 HyphenDict *
 hnj_hyphen_load (const char *fn)
 {
   HyphenDict *result;
   FILE *f;
-  f = fopen (fn, "r");
+  f = hnj_fopen (fn, "r");
   if (f == NULL)
     return NULL;
 
