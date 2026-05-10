@@ -190,7 +190,7 @@ int main(int argc, const char* argv[]) {
       }
       int i,j;
       char *pat = (char*) malloc(l+1);
-      char *org = (char*) malloc(l*2+1);
+      char *org = (char*) malloc(l*2+2);
       if (pat==NULL || org==NULL) die("not enough memory");
       expand(org,format,l);
       // remove hyphenation encoders (digits) from pat
@@ -226,7 +226,7 @@ int main(int argc, const char* argv[]) {
       //printf("%s is embedded in %s\n",pattab_val[subpat_ndx],pattab_val[p]);
           strncpy(newpat, pat+0,l); newpat[l]=0;
           if ((newpat_ndx = find_in(newpattab_key,newpatterns,newpat))<0) {
-            char *neworg = malloc(132); // TODO: compute exact length
+            char *neworg = malloc(l*2+2);
             if (neworg==NULL) die("not enough memory");
             expand(neworg,newpat,l);
             newpattab_key[newpatterns]   = newpat;
