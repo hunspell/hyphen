@@ -306,7 +306,7 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
             }
             repl = hnj_strdup(repl + 1);
           }
-	  for (i = 0; (unsigned char)buf[i] > (unsigned char)' '; i++)
+	  for (i = 0; (unsigned char)buf[i] > (unsigned char)' ' && j < MAX_CHARS - 2; i++)
 	    {
 	      if (buf[i] >= '0' && buf[i] <= '9')
 		pattern[j] = buf[i];
