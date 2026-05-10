@@ -146,12 +146,18 @@ main(int argc, char** argv)
        while((n >=0) && (lcword[n] == '.')) n--;
        n++;
 
+       if (n <= 0) {
+         free(hyphens);
+         free(lcword);
+         continue;
+       }
+
        /* now actually try to hyphenate the word */
-       
+
        rep = NULL;
        pos = NULL;
        cut = NULL;
-        
+
        /* set minimum required output buffer size (2 * word_size) */
        hword = (char *) malloc((n-1)*2);
        hword[0] = '\0';
