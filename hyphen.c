@@ -275,6 +275,9 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 	  } else if (strncmp(buf, "NOHYPHEN", 8) == 0) {
 	    char * space = buf + 8;
 	    while (*space != '\0' && (*space == ' ' || *space == '\t')) space++;
+	    if (dict->nohyphen) hnj_free(dict->nohyphen);
+	    dict->nohyphen = NULL;
+	    dict->nohyphenl = 0;
 	    if (*space != '\0') dict->nohyphen = hnj_strdup(space);
 	    if (dict->nohyphen) {
 	        char * nhe = dict->nohyphen + strlen(dict->nohyphen) - 1;
