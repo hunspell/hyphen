@@ -1028,8 +1028,8 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
             }
             int sub_size = i - begin + 1 + hyph;
             if (sub_size >= word_size) sub_size = word_size - 1;
-            if ((size_t)sub_size + begin + 1 > prep_word_size)
-                sub_size = (int)(prep_word_size - begin - 1);
+            if ((size_t)sub_size + begin + 2 > prep_word_size)
+                sub_size = (int)(prep_word_size - begin - 2);
             if (sub_size < 1) sub_size = 1;
             hnj_hyphen_hyph_(dict, prep_word + begin + 1, sub_size,
                 hyphens2, &rep2, &pos2, &cut2, clhmin,
