@@ -359,6 +359,8 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 #endif
 	  found = hnj_hash_lookup (hashtab, word);
 	  state_num = hnj_get_state (dict, hashtab, word);
+	  if (dict->states[state_num].match) hnj_free (dict->states[state_num].match);
+	  if (dict->states[state_num].repl) hnj_free (dict->states[state_num].repl);
 	  dict->states[state_num].match = hnj_strdup (pattern + i);
 	  dict->states[state_num].repl = repl;
 	  dict->states[state_num].replindex = replindex;
