@@ -127,8 +127,8 @@ main(int argc, char** argv)
   /* now read each word from the wtc file */
     while(fgets(buf,BUFSIZE,wtclst) != NULL) {
        k = strlen(buf);
-       if (k && buf[k - 1] == '\n') buf[k - 1] = '\0';
-       if (k >=2 && buf[k - 2] == '\r') buf[k-- - 2] = '\0';
+       if (k && buf[k - 1] == '\n') buf[--k] = '\0';
+       if (k && buf[k - 1] == '\r') buf[--k] = '\0';
 
        /* set aside some buffers to hold lower cased */
        /* and hyphen information */
@@ -140,11 +140,11 @@ main(int argc, char** argv)
          if ( (lcword[i] >= 'A') && (lcword[i] <= 'Z') )
            lcword[i] += 32;
        }
+       lcword[k] = '\0';
 
        /* first remove any trailing periods */
-       n = k-1;
-       while((n >=0) && (lcword[n] == '.')) n--;
-       n++;
+       n = k;
+       while ((n > 0) && (lcword[n - 1] == '.')) lcword[--n] = '\0';
 
        if (n <= 0 || n > BUFSIZE) {
          free(hyphens);
@@ -159,11 +159,11 @@ main(int argc, char** argv)
        cut = NULL;
 
        /* set minimum required output buffer size (2 * word_size) */
-       hword = (char *) malloc((n-1)*2);
+       hword = (char *) malloc(n * 2);
        hword[0] = '\0';
 
-       if ((!optd && hnj_hyphen_hyphenate(dict, lcword, n-1, hyphens)) ||
-	    (optd && hnj_hyphen_hyphenate2(dict, lcword, n-1, hyphens, hword, &rep, &pos, &cut))) {
+       if ((!optd && hnj_hyphen_hyphenate(dict, lcword, n, hyphens)) ||
+	    (optd && hnj_hyphen_hyphenate2(dict, lcword, n, hyphens, hword, &rep, &pos, &cut))) {
              free(hyphens);
              free(lcword);
              free(hword);
@@ -202,7 +202,7 @@ main(int argc, char** argv)
 
          if (optdd) single_hyphenations(lcword, hyphens, rep, pos, cut, dict->utf8);
          if (rep) {
-            for (i = 0; i < n - 1; i++) {
+            for (i = 0; i < n; i++) {
                 if (rep[i]) free(rep[i]);
             }
             free(rep);
