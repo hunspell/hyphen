@@ -759,7 +759,7 @@ int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
     /* ignore numbers */
     for (j = 0; word[j] <= '9' && word[j] >= '0'; j++) i--;
 
-    for (j = 0; i < lhmin && word[j] != '\0'; i++) do {
+    for (j = 0; i < lhmin && j < word_size && word[j] != '\0'; i++) do {
       /* check length of the non-standard part */
       if (*rep && *pos && *cut && (*rep)[j]) {
         char * rh = strchr((*rep)[j], '=');
