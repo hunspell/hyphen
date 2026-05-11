@@ -1175,7 +1175,7 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
     char * nh = dict->nohyphen;
     int nhi;
     for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
-        char * nhy = (char *) strstr(word, nh);
+        char * nhy = *nh ? (char *) strstr(word, nh) : NULL;
         while (nhy) {
             hyphens[nhy - word + strlen(nh) - 1] = '0';
             if (nhy - word  - 1 >= 0) hyphens[nhy - word - 1] = '0';
@@ -1216,7 +1216,7 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
     char * nh = dict->nohyphen;
     int nhi;
     for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
-        char * nhy = (char *) strstr(word, nh);
+        char * nhy = *nh ? (char *) strstr(word, nh) : NULL;
         while (nhy) {
             hyphens[nhy - word + strlen(nh) - 1] = 0;
             if (nhy - word  - 1 >= 0) hyphens[nhy - word - 1] = 0;
