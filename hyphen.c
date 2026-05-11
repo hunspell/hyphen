@@ -1108,7 +1108,7 @@ int hnj_hyphen_norm(const char *word, int word_size, char * hyphens,
         k = i - l + 1;
         l = k + (*cut)[i];
         (*cut)[j] = 0;        
-        for (; k < l; k++) {
+        for (; k < l && k < word_size; k++) {
             if ((((unsigned char) word[k]) >> 6) != 2) (*cut)[j]++;
         }
         (*rep)[j] = (*rep)[i];
