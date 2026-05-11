@@ -32,7 +32,8 @@ recursion.test \
 nohyphen2.test \
 nohyphen3.test \
 rhmin2.test \
-replindex.test
+replindex.test \
+matchindex.test
 
 distclean-local:
 	-rm -rf testSubDir
@@ -173,4 +174,8 @@ rhmin2.word \
 replindex.hyph \
 replindex.pat \
 replindex.test \
-replindex.word
+replindex.word \
+matchindex.hyph \
+matchindex.pat \
+matchindex.test \
+matchindex.word
