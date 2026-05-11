@@ -31,7 +31,8 @@ boundary.test \
 recursion.test \
 nohyphen2.test \
 nohyphen3.test \
-rhmin2.test
+rhmin2.test \
+replindex.test
 
 distclean-local:
 	-rm -rf testSubDir
@@ -168,4 +169,8 @@ nohyphen3.word \
 rhmin2.hyph \
 rhmin2.pat \
 rhmin2.test \
-rhmin2.word
+rhmin2.word \
+replindex.hyph \
+replindex.pat \
+replindex.test \
+replindex.word

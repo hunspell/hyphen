@@ -923,7 +923,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                 matchrepl[isrepl] = NULL;
                 matchindex[isrepl] = -1;
             }
-            if (offset + replindex >= 0)
+            if (offset + replindex >= 0 && offset + replindex < word_size + 3)
                 matchlen[offset + replindex] = replcut;
           }
 	  /* This is a linear search because I tried a binary search and
