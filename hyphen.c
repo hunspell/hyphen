@@ -1025,7 +1025,10 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                     prep_word[2 + i + hyph] = '\0';
                 }
             }
-            hnj_hyphen_hyph_(dict, prep_word + begin + 1, i - begin + 1 + hyph,
+            int sub_size = i - begin + 1 + hyph;
+            if (sub_size >= word_size) sub_size = word_size - 1;
+            if (sub_size < 1) sub_size = 1;
+            hnj_hyphen_hyph_(dict, prep_word + begin + 1, sub_size,
                 hyphens2, &rep2, &pos2, &cut2, clhmin,
                 crhmin, (begin > 0 ? 0 : lend), (hyphens[i]&1 ? 0 : rend));
             for (j = 0; j < i - begin; j++) {

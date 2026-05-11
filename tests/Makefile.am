@@ -28,6 +28,7 @@ lig.test \
 hyphen.test \
 num.test \
 boundary.test \
+recursion.test \
 nohyphen2.test \
 nohyphen3.test \
 rhmin2.test
@@ -152,6 +153,10 @@ boundary.hyph \
 boundary.pat \
 boundary.test \
 boundary.word \
+recursion.hyph \
+recursion.pat \
+recursion.test \
+recursion.word \
 nohyphen2.hyph \
 nohyphen2.pat \
 nohyphen2.test \
