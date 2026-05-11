@@ -795,7 +795,10 @@ int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
       /* check length of the non-standard part */
       if (*rep && *pos && *cut && (*rep)[j]) {
         char * rh = strchr((*rep)[j], '=');
-        if (rh && (hnj_hyphen_strnlen(word + j - (*pos)[j] + (*cut)[j] + 1, 100, utf8) +
+        int start = j - (*pos)[j] + (*cut)[j] + 1;
+        int word_len = (start >= 0 && start <= word_size) ?
+            hnj_hyphen_strnlen(word + start, word_size - start, utf8) : 0;
+        if (rh && (word_len +
           hnj_hyphen_strnlen(rh + 1, strlen(rh + 1), utf8)) < rhmin) {
             free((*rep)[j]);
             (*rep)[j] = NULL;
