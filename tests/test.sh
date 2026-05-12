@@ -23,11 +23,7 @@ if [ "$VALGRIND" != "" ]; then
 fi
 }
 
-if [ -d ../../_build/../tests ]; then
-  TESTDIR="../../tests"
-else
-  TESTDIR="."
-fi
+TESTDIR="${srcdir:-.}"
 
 TEMPDIR="./testSubDir"
 NAME="$1"
