@@ -976,7 +976,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
              nHyphCount++;
        j = 0;
        for (i = 0; i < word_size; i++) {
-           if (isrepl && (matchindex[i] >= 1) && (matchindex[i] <= word_size) && matchrepl[matchindex[i]]) {
+           if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size && matchrepl[matchindex[i]]) {
                 if (rep && pos && cut) {
                     if (!*rep)
                         *rep = (char **) calloc(word_size, sizeof(char *));
