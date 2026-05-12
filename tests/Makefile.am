@@ -96,12 +96,15 @@ compound4.pat \
 compound4.word \
 compound5.hyph \
 compound5.pat \
+compound5.test \
 compound5.word \
 compound6.hyph \
 compound6.pat \
+compound6.test \
 compound6.word \
 compound7.hyph \
 compound7.pat \
+compound7.test \
 compound7.word \
 settings.hyph \
 settings.pat \
