@@ -1054,6 +1054,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                     (*rep)[begin + j] = rep2[j];
                     (*pos)[begin + j] = pos2[j];
                     (*cut)[begin + j] = cut2[j];
+                    rep2[j] = NULL;
                 }
             }
             prep_word[i + 2] = word[i + 1];
@@ -1064,7 +1065,10 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
             }
         }
         begin = i + 1;
-        for (j = 0; j < word_size; j++) rep2[j] = NULL;
+        for (j = 0; j < word_size; j++) {
+            hnj_free(rep2[j]);
+            rep2[j] = NULL;
+        }
      }
      
      /* non-compound */
