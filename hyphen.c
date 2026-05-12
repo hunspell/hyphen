@@ -985,6 +985,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                     if (!*cut) {
                         *cut = (int *) calloc(word_size, sizeof(int));
                     }
+                    hnj_free((*rep)[matchindex[i] - 1]);
                     (*rep)[matchindex[i] - 1] = hnj_strdup(matchrepl[matchindex[i]]);
                     (*pos)[matchindex[i] - 1] = matchindex[i] - i;
                     (*cut)[matchindex[i] - 1] = matchlen[i];
