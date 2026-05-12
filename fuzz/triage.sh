@@ -21,7 +21,7 @@ for f in "$ARTIFACTS"/crash-* "$ARTIFACTS"/leak-* "$ARTIFACTS"/oom-* "$ARTIFACTS
     total=$((total + 1))
 
     # Replay quickly. Symbolised ASan output goes to stderr.
-    out=$(ASAN_OPTIONS=detect_leaks=0:abort_on_error=0:symbolize=1 \
+    out=$(ASAN_OPTIONS=detect_leaks=1:abort_on_error=0:symbolize=1 \
           UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=0:symbolize=1 \
           timeout 15 ./fuzz/fuzz_hyphen "$f" 2>&1 || true)
 

@@ -20,7 +20,7 @@ LOG="$FUZZ_STATE/logs/fuzz.log"
 echo "[run_long] starting at $(date -Iseconds)" | tee -a "$LOG"
 echo "[run_long]   forks=$FORKS max_time=${MAX_TIME}s state=$FUZZ_STATE" | tee -a "$LOG"
 
-ASAN_OPTIONS="detect_leaks=0:abort_on_error=1:dedup_token_length=3:print_stacktrace=1:symbolize=1" \
+ASAN_OPTIONS="detect_leaks=1:abort_on_error=1:dedup_token_length=3:print_stacktrace=1:symbolize=1" \
 UBSAN_OPTIONS="print_stacktrace=1:halt_on_error=0:symbolize=1" \
 exec ./fuzz/fuzz_hyphen \
     -fork="$FORKS" \

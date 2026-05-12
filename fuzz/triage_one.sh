@@ -6,7 +6,7 @@
 f=$1
 [ -f "$f" ] || exit 0
 
-out=$(ASAN_OPTIONS=detect_leaks=0:abort_on_error=0:symbolize=1 \
+out=$(ASAN_OPTIONS=detect_leaks=1:abort_on_error=0:symbolize=1 \
       UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=0:symbolize=1 \
       timeout 15 /home/caolan/auto/jail/repos/hyphen/fuzz/fuzz_hyphen "$f" 2>&1 || true)
 
