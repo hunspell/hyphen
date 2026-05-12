@@ -1051,6 +1051,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                             (*cut)[k] = 0;
                         }
                     }
+                    hnj_free((*rep)[begin + j]);
                     (*rep)[begin + j] = rep2[j];
                     (*pos)[begin + j] = pos2[j];
                     (*cut)[begin + j] = cut2[j];
