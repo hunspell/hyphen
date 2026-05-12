@@ -4,10 +4,9 @@
  * If no NUL is present, the whole buffer is treated as the dictionary
  * and the word is empty (parser-only path).
  *
- * The dictionary is loaded via fmemopen() to avoid filesystem I/O.
+ * The dictionary is loaded via hnj_hyphen_load_data() to avoid filesystem I/O.
  */
 
-#define _GNU_SOURCE
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -110,11 +109,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 
     if (dict_size == 0) return 0;
 
-    FILE *f = fmemopen((void *)dict_buf, dict_size, "r");
-    if (!f) return 0;
-
-    HyphenDict *dict = hnj_hyphen_load_file(f);
-    fclose(f);
+    HyphenDict *dict = hnj_hyphen_load_data((const char *)dict_buf, dict_size);
     if (!dict) return 0;
 
     if (word_size > 0) {
