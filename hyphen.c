@@ -780,7 +780,7 @@ int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
        if (utf8 && ((unsigned char) word[j] == 0xEF) && ((unsigned char) word[j + 1] == 0xAC))  {
          i += hnj_ligature(word[j + 2]);
        }
-    } while (utf8 && (word[j] & 0xc0) == 0x80);
+    } while (j < word_size && utf8 && (word[j] & 0xc0) == 0x80);
     return 0;
 }
 
