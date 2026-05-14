@@ -84,7 +84,7 @@ main(int argc, char** argv)
             optd = 0;
             arg++;
        }
-       if (strcmp(argv[arg], "-n") == 0) {
+       if (argv[arg] && strcmp(argv[arg], "-n") == 0) {
             optn = 1;
             arg++;
        }
