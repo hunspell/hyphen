@@ -1275,7 +1275,6 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
     rep, pos, cut, (lhmin > 0 ? lhmin : 2));
   hnj_hyphen_rhmin(dict->utf8, word, word_size, hyphens,
     rep, pos, cut, (rhmin > 0 ? rhmin : 2));
-  if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
 
   /* nohyphen */
   if (dict->nohyphen) {
@@ -1292,6 +1291,7 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
     }
   }
 
+  if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
   if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
   return 0;
 }
