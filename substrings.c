@@ -206,7 +206,7 @@ int main(int argc, const char* argv[]) {
     }
   }
   fclose(in);
-  // As we use binairy search, make sure it is sorted
+  // As we use binary search, make sure it is sorted
   qsort_arr(pattab_key,pattab_val,0,patterns-1);
 
   for (p=0; p<patterns; p++) {
@@ -231,7 +231,7 @@ int main(int argc, const char* argv[]) {
             expand(neworg,newpat,l);
             newpattab_key[newpatterns]   = newpat;
             newpattab_val[newpatterns++] = combine(neworg,pattab_val[subpat_ndx]);
-            if (newpatterns>MAXPATHS) die("to many new patterns");
+            if (newpatterns>=MAXPATHS) die("to many new patterns");
     //printf("%*.*s|%*.*s[%s] (%s|%s) = %s\n",i,i,pat,j,j,pat+i,pat+i+j,pattab_val[p],pattab_val[subpat_ndx],neworg);
           } else {
             free(newpat);
