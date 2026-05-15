@@ -1,3 +1,18 @@
+2026-05-15 Hyphen 2.8.9:
+  - new public API: hnj_hyphen_load_data, loads a dictionary from a
+    raw memory buffer (Resolves #4, contributed by Roman "SBKarr"
+    Katuntsev). Useful for Android, embedded systems, and any caller
+    holding dict bytes in memory.
+  - Windows long-path support via _wfopen (fdo#48017, originally from
+    LibreOffice)
+  - many memory-safety fixes for malformed dictionaries and adversarial
+    word input, found via libFuzzer + ASan + LSan: crashes
+    in the rep-application loop, lhmin/rhmin loops, hyphword/norm
+    compaction; infinite-recursion guards in the compound hyphenation
+    path; leak fixes in the dict parser and in every site that writes
+    into the (*rep)/(*pos)/(*cut) arrays
+  - fuzz harness (fuzz/) shipping with the source
+
 2014-09-18 Hyphen 2.8.8:
   - remove last coverity warning, 0 remaining
 
