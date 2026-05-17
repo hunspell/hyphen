@@ -6,5 +6,6 @@ AC_PROG_LIBTOOL
 
 AC_CONFIG_FILES([Makefile
                  doc/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 hyphen.pc])
 AC_OUTPUT

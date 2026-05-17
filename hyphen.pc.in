@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+libdir=@libdir@
+includedir=@includedir@
+
+Name: hyphen
+Description: Hyphenation library
+Version: @VERSION@
+Libs: -L${libdir} -lhyphen
+Cflags: -I${includedir}

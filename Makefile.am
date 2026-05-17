@@ -18,6 +18,9 @@ example_LDADD = libhyphen.la
 
 bin_SCRIPTS = substrings.pl
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = hyphen.pc
+
 hyphdir = $(datadir)/hyphen
 
 # use it if you can recreate hyph_en_US.dic from
@@ -26,7 +29,7 @@ hyph_DATA = hyph_en_US.dic
 EXTRA_DIST = checkme.lst hyphen.tex tbhyphext.tex tbhyphext.sh \
     README.compound README.hyphen README.nonstandard substrings.pl hyphen.patch \
     COPYING.MPL COPYING.LGPL hyph_en_US.dic README_hyph_en_US.txt lig.awk \
-    ligpatch.txt
+    ligpatch.txt hyphen.pc.in
 
 hyphen.us3:
 	cp -f $(srcdir)/hyphen.tex hyphen.us
