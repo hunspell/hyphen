@@ -31,9 +31,11 @@ This distribution is the source of the en_US hyphenation patterns
 
 Source files of hyph_en_US.dic in the distribution:
 
-hyphen.tex (en_US hyphenation patterns from plain TeX)
+ushyphmax.tex (en_US hyphenation patterns by Gerard D.C. Kuiken, also
+known as usenglishmax, based on Knuth's plain TeX patterns with the
+TUGboat hyphenation exception log folded in)
 
-  Source: http://tug.ctan.org/text-archive/macros/plain/base/hyphen.tex
+  Source: part of the hyph-utf8 package, http://www.hyphenation.org/tex
 
 tbhyphext.tex: hyphenation exception log from TugBoat archive
 

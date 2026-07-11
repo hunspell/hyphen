@@ -19,9 +19,10 @@ See original license in this file.
 
 Conversion and modifications by László Németh (nemeth at OOo).
 
-Based on the plain TeX hyphenation table
-(http://tug.ctan.org/text-archive/macros/plain/base/hyphen.tex) and
-the TugBoat hyphenation exceptions log in
+Based on the American English hyphenation patterns ushyphmax.tex by
+Gerard D.C. Kuiken (part of the hyph-utf8 package,
+http://www.hyphenation.org/tex), which build on Knuth's plain TeX
+patterns, and the TugBoat hyphenation exceptions log in
 http://www.ctan.org/tex-archive/info/digests/tugboat/tb0hyf.tex, processed
 by the hyphenex.sh script (see in the same directory).
 
@@ -31,11 +32,11 @@ scripts.
 
 Licenses
 
-hyphen.tex:
-% The Plain TeX hyphenation tables [NOT TO BE CHANGED IN ANY WAY!]
-% Unlimited copying and redistribution of this file are permitted as long
-% as this file is not modified. Modifications are permitted, but only if
-% the resulting file is not named hyphen.tex.
+ushyphmax.tex:
+% copyright: Copyright (C) 1990, 2004, 2005 Gerard D.C. Kuiken
+% Copying and distribution of this file, with or without modification,
+% are permitted in any medium without royalty provided the copyright
+% notice and this notice are preserved.
 
 output of hyphenex.sh:
 % Hyphenation exceptions for US English, based on hyphenation exception

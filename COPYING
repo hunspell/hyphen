@@ -6,11 +6,13 @@ the GNU Lesser General Public License Version 2.1 or later (the "LGPL",
 see COPYING.LGPL) or the Mozilla Public License Version 1.1 or later
 (the "MPL", see COPYING.MPL).
 
-The Plain TeX hyphenation tables "hyphen.tex" by Donald E. Knuth
-has a non MPL/LGPL compatible license, but freely redistributable:
-"Unlimited copying and redistribution of this file are permitted as long
-as this file is not modified. Modifications are permitted, but only if
-the resulting file is not named hyphen.tex."
+The American English hyphenation patterns "ushyphmax.tex" by Gerard
+D.C. Kuiken (Copyright (C) 1990, 2004, 2005), based on Donald E. Knuth's
+plain TeX patterns, have a non MPL/LGPL compatible license, but freely
+redistributable:
+"Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved."
 
 Software distributed under these licenses is distributed on an "AS IS" basis,
 WITHOUT WARRANTY OF ANY KIND, either express or implied. See the licences
