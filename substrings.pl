@@ -21,21 +21,16 @@ if (defined $encoding) { print OUT "$encoding\n"; }
 if (defined $lhmin) { print OUT "LEFTHYPHENMIN $lhmin\n"; }
 if (defined $rhmin) { print OUT "RIGHTHYPHENMIN $rhmin\n"; }
 
-# keep header
+# Copy the leading comment block to the output. Once the first rule line
+# has been seen, later comment lines are dropped instead of copied, and
+# every rule line including the first one is processed.
+my $inheader = 1;
 while (<HYPH>)
 {
     if (/^%/) {
-        print OUT "$_";
+        print OUT "$_" if $inheader;
     } else {
-        last;
-    }
-}
-
-while (<HYPH>)
-{
-    if (/^%/) {
-        #comment, ignore
-    } else {
+        $inheader = 0;
         $_ =~ s/%.*$//g;
         for (split ' ', $_) {
             if (/^(.+)\/([^,]+),([0-9]+),([0-9]+)$/) {
