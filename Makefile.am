@@ -29,13 +29,14 @@ hyph_DATA = hyph_en_US.dic
 EXTRA_DIST = checkme.lst ushyphmax.tex tbhyphext.tex tbhyphext.sh \
     README.compound README.hyphen README.nonstandard substrings.pl \
     COPYING.MPL COPYING.LGPL hyph_en_US.dic README_hyph_en_US.txt lig.awk \
-    ligpatch.txt hyphen.pc.in
+    ligpatch.txt corrections.txt hyphen.pc.in
 
 hyphen.us3:
 	sed '/^%/d' $(srcdir)/ushyphmax.tex >hyphen.us
 	$(srcdir)/tbhyphext.sh <$(srcdir)/tbhyphext.tex >hyphen.us2
 	cat hyphen.us hyphen.us2 | $(AWK) -f $(srcdir)/lig.awk >hyphen.us3
 	cat $(srcdir)/ligpatch.txt >>hyphen.us3
+	cat $(srcdir)/corrections.txt >>hyphen.us3
 
 hyph_en_US.dic: hyphen.us3
 	perl $(srcdir)/substrings.pl hyphen.us3 hyph_en_US.dic UTF-8 2 3 >/dev/null

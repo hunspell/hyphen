@@ -1,0 +1,12 @@
+% Local hyphenation corrections for words the pattern set gets wrong.
+% These are exception patterns: 9 forces a break at that spot, 8 suppresses
+% one, and both beat the ordinary 1 to 5 values in the pattern set, so each
+% line pins the whole word exactly. They are catted onto the set last.
+%
+% ushyphmax gives de-mo-c-rat, its own documented bug; the dictionary form
+% is dem-o-crat.
+.d8e8m9o9c8r8a8t.
+.d8e8m9o9c8r8a8t8s.
+% the pattern set suppresses the second break and gives ni-hilism; the
+% dictionary form is ni-hil-ism.
+.n8i9h8i8l9i8s8m.
