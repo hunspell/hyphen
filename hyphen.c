@@ -1262,6 +1262,49 @@ static void hnj_hyphen_nohyphen(HyphenDict *dict, const char *word, int word_siz
   }
 }
 
+/* rep, pos and cut point to the caller's arrays, or are NULL, and then the arrays are local */
+static int hnj_hyphen_hyphenate_hyphenmin (HyphenDict *dict,
+	const char *word, int word_size, char * hyphens,
+	char *hyphword, char *** rep, int ** pos, int ** cut,
+	int lhmin, int rhmin, int clhmin, int crhmin)
+{
+  char ** rep_local = NULL;
+  int * pos_local = NULL;
+  int * cut_local = NULL;
+  int ret = 0;
+  int i;
+
+  if (!rep || !pos || !cut) {
+    rep = &rep_local;
+    pos = &pos_local;
+    cut = &cut_local;
+  }
+
+  hnj_hyphen_hyph_(dict, word, word_size, hyphens, rep, pos, cut,
+    clhmin, crhmin, 1, 1);
+  hnj_hyphen_lhmin(dict->utf8, word, word_size, hyphens,
+    rep, pos, cut, (lhmin > 0 ? lhmin : 2));
+  hnj_hyphen_rhmin(dict->utf8, word, word_size, hyphens,
+    rep, pos, cut, (rhmin > 0 ? rhmin : 2));
+
+  /* nohyphen */
+  if (dict->nohyphen) hnj_hyphen_nohyphen(dict, word, word_size, hyphens);
+
+  if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
+  if (dict->utf8) ret = hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
+#ifdef VERBOSE
+  else printf ("nums: %s\n", hyphens);
+#endif
+
+  if (rep_local) {
+    for (i = 0; i < word_size; i++) free(rep_local[i]);
+    free(rep_local);
+  }
+  free(pos_local);
+  free(cut_local);
+  return ret;
+}
+
 /* main api function with default hyphenmin parameters */
 int hnj_hyphen_hyphenate2 (HyphenDict *dict,
 			   const char *word, int word_size, char * hyphens,
@@ -1269,22 +1312,8 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
 {
   if (word_size < 0 || word_size > MAX_WORD_SIZE)
     return 1;
-  hnj_hyphen_hyph_(dict, word, word_size, hyphens, rep, pos, cut,
-    dict->clhmin, dict->crhmin, 1, 1);
-  hnj_hyphen_lhmin(dict->utf8, word, word_size,
-    hyphens, rep, pos, cut, (dict->lhmin > 0 ? dict->lhmin : 2));
-  hnj_hyphen_rhmin(dict->utf8, word, word_size,
-    hyphens, rep, pos, cut, (dict->rhmin > 0 ? dict->rhmin : 2));
-
-  /* nohyphen */
-  if (dict->nohyphen) hnj_hyphen_nohyphen(dict, word, word_size, hyphens);
-
-  if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
-  if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
-#ifdef VERBOSE
-  printf ("nums: %s\n", hyphens);
-#endif
-  return 0;
+  return hnj_hyphen_hyphenate_hyphenmin(dict, word, word_size, hyphens, hyphword, rep, pos, cut,
+    dict->lhmin, dict->rhmin, dict->clhmin, dict->crhmin);
 }
 
 /* previous main api function with hyphenmin parameters */
@@ -1299,17 +1328,6 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
   rhmin = (rhmin > dict->rhmin) ? rhmin : dict->rhmin;
   clhmin = (clhmin > dict->clhmin) ? clhmin : dict->clhmin;
   crhmin = (crhmin > dict->crhmin) ? crhmin : dict->crhmin;
-  hnj_hyphen_hyph_(dict, word, word_size, hyphens, rep, pos, cut,
-    clhmin, crhmin, 1, 1);
-  hnj_hyphen_lhmin(dict->utf8, word, word_size, hyphens,
-    rep, pos, cut, (lhmin > 0 ? lhmin : 2));
-  hnj_hyphen_rhmin(dict->utf8, word, word_size, hyphens,
-    rep, pos, cut, (rhmin > 0 ? rhmin : 2));
-
-  /* nohyphen */
-  if (dict->nohyphen) hnj_hyphen_nohyphen(dict, word, word_size, hyphens);
-
-  if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
-  if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
-  return 0;
+  return hnj_hyphen_hyphenate_hyphenmin(dict, word, word_size, hyphens, hyphword, rep, pos, cut,
+    lhmin, rhmin, clhmin, crhmin);
 }
