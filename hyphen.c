@@ -387,8 +387,8 @@ FILE * hnj_fopen(const char * path, const char * mode) {
 #define WIN32_LONG_PATH_PREFIX "\\\\?\\"
     if (strncmp(path, WIN32_LONG_PATH_PREFIX, 4) == 0) {
         int len = MultiByteToWideChar(CP_UTF8, 0, path, -1, NULL, 0);
-        wchar_t *buff = (wchar_t *) malloc(len * sizeof(wchar_t));
-        wchar_t *buff2 = (wchar_t *) malloc(len * sizeof(wchar_t));
+        wchar_t *buff = (wchar_t *) hnj_malloc(len * sizeof(wchar_t));
+        wchar_t *buff2 = (wchar_t *) hnj_malloc(len * sizeof(wchar_t));
         FILE * f = NULL;
         MultiByteToWideChar(CP_UTF8, 0, path, -1, buff, len);
         if (_wfullpath( buff2, buff, len ) != NULL) {
@@ -1035,12 +1035,17 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
        for (i = 0; i < word_size; i++) {
            if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size && matchrepl[matchindex[i]]) {
                 if (rep && pos && cut) {
-                    if (!*rep)
-                        *rep = (char **) calloc(word_size, sizeof(char *));
-                    if (!*pos)
-                        *pos = (int *) calloc(word_size, sizeof(int));
+                    if (!*rep) {
+                        *rep = (char **) hnj_malloc(word_size * sizeof(char *));
+                        memset(*rep, 0, word_size * sizeof(char *));
+                    }
+                    if (!*pos) {
+                        *pos = (int *) hnj_malloc(word_size * sizeof(int));
+                        memset(*pos, 0, word_size * sizeof(int));
+                    }
                     if (!*cut) {
-                        *cut = (int *) calloc(word_size, sizeof(int));
+                        *cut = (int *) hnj_malloc(word_size * sizeof(int));
+                        memset(*cut, 0, word_size * sizeof(int));
                     }
                     hnj_free((*rep)[matchindex[i] - 1]);
                     (*rep)[matchindex[i] - 1] = hnj_strdup(matchrepl[matchindex[i]]);
@@ -1100,9 +1105,9 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                 if (rep2[j] && rep && pos && cut) {
                     if (!*rep && !*pos && !*cut) {
                         int k;
-                        *rep = (char **) malloc(sizeof(char *) * word_size);
-                        *pos = (int *) malloc(sizeof(int) * word_size);
-                        *cut = (int *) malloc(sizeof(int) * word_size);
+                        *rep = (char **) hnj_malloc(sizeof(char *) * word_size);
+                        *pos = (int *) hnj_malloc(sizeof(int) * word_size);
+                        *cut = (int *) hnj_malloc(sizeof(int) * word_size);
                         for (k = 0; k < word_size; k++) {
                             (*rep)[k] = NULL;
                             (*pos)[k] = 0;
