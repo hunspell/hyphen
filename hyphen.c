@@ -644,6 +644,9 @@ void hnj_hyphen_free (HyphenDict *dict)
 /* the longest word that the hyphenate functions accept */
 #define MAX_WORD_SIZE (INT_MAX / 8)
 
+/* the deepest nesting of compound parts that is split again */
+#define MAX_COMPOUND_DEPTH 32
+
 int hnj_hyphen_hyphenate (HyphenDict *dict,
 			   const char *word, int word_size,
 			   char *hyphens)
@@ -868,9 +871,9 @@ int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
 }
 
 /* recursive function for compound level hyphenation */
-int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
+static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_size,
     char * hyphens, char *** rep, int ** pos, int ** cut,
-    int clhmin, int crhmin, int lend, int rend)
+    int clhmin, int crhmin, int lend, int rend, int depth)
 {
   char *prep_word;
   int i, j, k;
@@ -1066,7 +1069,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
      cut2 = (int*) hnj_malloc (word_size * sizeof(int));
      hyphens2 = (char*) hnj_malloc (word_size + 3);
      for (i = 0; i < word_size; i++) rep2[i] = NULL;
-     for (i = 0; i < word_size; i++) if
+     for (i = 0; i < word_size && depth < MAX_COMPOUND_DEPTH; i++) if
         (hyphens[i]&1 || (begin > 0 && i + 1 == word_size)) {
         if (i - begin > 0) {
             int hyph = 0;
@@ -1089,9 +1092,9 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
                 sub_size = (int)(prep_word_size - begin - 2);
             if (sub_size < 1) sub_size = 1;
             memset(hyphens2, '0', i - begin);
-            hnj_hyphen_hyph_(dict, prep_word + begin + 1, sub_size,
+            hnj_hyphen_hyph_depth(dict, prep_word + begin + 1, sub_size,
                 hyphens2, &rep2, &pos2, &cut2, clhmin,
-                crhmin, (begin > 0 ? 0 : lend), (hyphens[i]&1 ? 0 : rend));
+                crhmin, (begin > 0 ? 0 : lend), (hyphens[i]&1 ? 0 : rend), depth + 1);
             for (j = 0; j < i - begin; j++) {
                 hyphens[begin + j] = hyphens2[j];
                 if (rep2[j] && rep && pos && cut) {
@@ -1129,8 +1132,8 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
 
      /* non-compound */
      if (begin == 0) {
-        hnj_hyphen_hyph_(dict->nextlevel, word, word_size,
-            hyphens, rep, pos, cut, clhmin, crhmin, lend, rend);
+        hnj_hyphen_hyph_depth(dict->nextlevel, word, word_size,
+            hyphens, rep, pos, cut, clhmin, crhmin, lend, rend, depth + 1);
         if (!lend) hnj_hyphen_lhmin(dict->utf8, word, word_size, hyphens,
             rep, pos, cut, clhmin);
         if (!rend) hnj_hyphen_rhmin(dict->utf8, word, word_size, hyphens,
@@ -1145,6 +1148,14 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
 
   hnj_free (prep_word);
   return 0;
+}
+
+int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
+    char * hyphens, char *** rep, int ** pos, int ** cut,
+    int clhmin, int crhmin, int lend, int rend)
+{
+  return hnj_hyphen_hyph_depth(dict, word, word_size, hyphens, rep, pos, cut,
+    clhmin, crhmin, lend, rend, 0);
 }
 
 /* UTF-8 normalization of hyphen and non-standard positions */
