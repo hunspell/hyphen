@@ -641,6 +641,9 @@ void hnj_hyphen_free (HyphenDict *dict)
 
 #define MAX_WORD 256
 
+/* the longest word that the hyphenate functions accept */
+#define MAX_WORD_SIZE (INT_MAX / 8)
+
 int hnj_hyphen_hyphenate (HyphenDict *dict,
 			   const char *word, int word_size,
 			   char *hyphens)
@@ -652,6 +655,9 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
   HyphenState *hstate;
   char *match;
   int offset;
+
+  if (word_size < 0 || word_size > MAX_WORD_SIZE)
+    return 1;
 
   prep_word = (char*) hnj_malloc (word_size + 3);
 
@@ -1249,6 +1255,8 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
 			   const char *word, int word_size, char * hyphens,
 			   char *hyphword, char *** rep, int ** pos, int ** cut)
 {
+  if (word_size < 0 || word_size > MAX_WORD_SIZE)
+    return 1;
   hnj_hyphen_hyph_(dict, word, word_size, hyphens, rep, pos, cut,
     dict->clhmin, dict->crhmin, 1, 1);
   hnj_hyphen_lhmin(dict->utf8, word, word_size,
@@ -1273,6 +1281,8 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
 	char *hyphword, char *** rep, int ** pos, int ** cut,
 	int lhmin, int rhmin, int clhmin, int crhmin)
 {
+  if (word_size < 0 || word_size > MAX_WORD_SIZE)
+    return 1;
   lhmin = (lhmin > dict->lhmin) ? lhmin : dict->lhmin;
   rhmin = (rhmin > dict->rhmin) ? rhmin : dict->rhmin;
   clhmin = (clhmin > dict->clhmin) ? clhmin : dict->clhmin;

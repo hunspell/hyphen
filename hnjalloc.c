@@ -39,26 +39,26 @@
 #include <stdio.h>
 
 void *
-hnj_malloc (int size)
+hnj_malloc (size_t size)
 {
   void *p;
 
   p = malloc (size);
   if (p == NULL)
     {
-      fprintf (stderr, "can't allocate %d bytes\n", size);
+      fprintf (stderr, "can't allocate %zu bytes\n", size);
       exit (1);
     }
   return p;
 }
 
 void *
-hnj_realloc (void *p, int size)
+hnj_realloc (void *p, size_t size)
 {
   p = realloc (p, size);
   if (p == NULL)
     {
-      fprintf (stderr, "can't allocate %d bytes\n", size);
+      fprintf (stderr, "can't allocate %zu bytes\n", size);
       exit (1);
     }
   return p;

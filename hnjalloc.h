@@ -33,13 +33,15 @@
  * MPL.
  *
  */
+#include <stddef.h>
+
 /* wrappers for malloc */
 
 void *
-hnj_malloc (int size);
+hnj_malloc (size_t size);
 
 void *
-hnj_realloc (void *p, int size);
+hnj_realloc (void *p, size_t size);
 
 void
 hnj_free (void *p);
