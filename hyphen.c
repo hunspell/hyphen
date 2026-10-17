@@ -1224,6 +1224,26 @@ void hnj_hyphen_hyphword(const char * word, int word_size, const char * hyphens,
 }
 
 
+/* no hyphenation next to a NOHYPHEN string within the first word_size bytes of the word */
+static void hnj_hyphen_nohyphen(HyphenDict *dict, const char *word, int word_size, char * hyphens)
+{
+  char * nh = dict->nohyphen;
+  int nhi;
+  for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
+    int nh_size = strlen(nh);
+    int k;
+    if (nh_size > 0) {
+      for (k = 0; k + nh_size <= word_size; k++) {
+        if (memcmp(word + k, nh, nh_size) == 0) {
+          hyphens[k + nh_size - 1] = '0';
+          if (k > 0) hyphens[k - 1] = '0';
+        }
+      }
+    }
+    nh = nh + nh_size + 1;
+  }
+}
+
 /* main api function with default hyphenmin parameters */
 int hnj_hyphen_hyphenate2 (HyphenDict *dict,
 			   const char *word, int word_size, char * hyphens,
@@ -1237,19 +1257,7 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
     hyphens, rep, pos, cut, (dict->rhmin > 0 ? dict->rhmin : 2));
 
   /* nohyphen */
-  if (dict->nohyphen) {
-    char * nh = dict->nohyphen;
-    int nhi;
-    for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
-        char * nhy = *nh ? (char *) strstr(word, nh) : NULL;
-        while (nhy) {
-            hyphens[nhy - word + strlen(nh) - 1] = '0';
-            if (nhy - word  - 1 >= 0) hyphens[nhy - word - 1] = '0';
-            nhy = (char *) strstr(nhy + 1, nh);
-        }
-        nh = nh + strlen(nh) + 1;
-    }
-  }
+  if (dict->nohyphen) hnj_hyphen_nohyphen(dict, word, word_size, hyphens);
 
   if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
   if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
@@ -1277,19 +1285,7 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
     rep, pos, cut, (rhmin > 0 ? rhmin : 2));
 
   /* nohyphen */
-  if (dict->nohyphen) {
-    char * nh = dict->nohyphen;
-    int nhi;
-    for (nhi = 0; nhi <= dict->nohyphenl; nhi++) {
-        char * nhy = *nh ? (char *) strstr(word, nh) : NULL;
-        while (nhy) {
-            hyphens[nhy - word + strlen(nh) - 1] = '0';
-            if (nhy - word  - 1 >= 0) hyphens[nhy - word - 1] = '0';
-            nhy = (char *) strstr(nhy + 1, nh);
-        }
-        nh = nh + strlen(nh) + 1;
-    }
-  }
+  if (dict->nohyphen) hnj_hyphen_nohyphen(dict, word, word_size, hyphens);
 
   if (hyphword) hnj_hyphen_hyphword(word, word_size, hyphens, hyphword, rep, pos, cut);
   if (dict->utf8) return hnj_hyphen_norm(word, word_size, hyphens, rep, pos, cut);
