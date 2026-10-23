@@ -310,7 +310,12 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
             } else {
                 hnj_strchomp(repl + 1);
                 replindex = 0;
-                replcut = (signed char) strlen(buf);
+                /* the whole pattern is cut: count its characters, not its digits or dots */
+                for (i = 0; (unsigned char) buf[i] > ' ' && replcut < 127; i++) {
+                    unsigned char c = (unsigned char) buf[i];
+                    if ((c < '0' || c > '9') && c != '.' && !(dict->utf8 && (c >> 6) == 2))
+                        replcut++;
+                }
             }
             repl = hnj_strdup(repl + 1);
           }

@@ -62,7 +62,9 @@ while (<HYPH>)
                 $pattab{$pat} = $origpat;
                 $repltab{$pat} = $repl;
                 $replbeg{$pat} = 0;
-                $repllen{$pat} = enclen($pat);
+                # the whole pattern is cut, its dots excluded
+                ($letters = $pat) =~ s/\.//g;
+                $repllen{$pat} = enclen($letters);
             } elsif (/^(.+)$/) {
                 $origpat = $1;
                 $pat = $1;
