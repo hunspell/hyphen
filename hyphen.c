@@ -1333,7 +1333,7 @@ int hnj_hyphen_hyphenate2 (HyphenDict *dict,
 			   const char *word, int word_size, char * hyphens,
 			   char *hyphword, char *** rep, int ** pos, int ** cut)
 {
-  if (word_size < 0 || word_size > MAX_WORD_SIZE)
+  if (word_size < 1 || word_size > MAX_WORD_SIZE)
     return 1;
   return hnj_hyphen_hyphenate_hyphenmin(dict, word, word_size, hyphens, hyphword, rep, pos, cut,
     dict->lhmin, dict->rhmin, dict->clhmin, dict->crhmin);
@@ -1345,7 +1345,7 @@ int hnj_hyphen_hyphenate3 (HyphenDict *dict,
 	char *hyphword, char *** rep, int ** pos, int ** cut,
 	int lhmin, int rhmin, int clhmin, int crhmin)
 {
-  if (word_size < 0 || word_size > MAX_WORD_SIZE)
+  if (word_size < 1 || word_size > MAX_WORD_SIZE)
     return 1;
   lhmin = (lhmin > dict->lhmin) ? lhmin : dict->lhmin;
   rhmin = (rhmin > dict->rhmin) ? rhmin : dict->rhmin;
