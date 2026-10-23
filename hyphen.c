@@ -876,6 +876,23 @@ int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
     return 0;
 }
 
+/* allocate, zeroed, whichever of the rep, pos and cut arrays is still NULL */
+static void hnj_hyphen_alloc_replacements(int word_size, char *** rep, int ** pos, int ** cut)
+{
+    if (!*rep) {
+        *rep = (char **) hnj_malloc(word_size * sizeof(char *));
+        memset(*rep, 0, word_size * sizeof(char *));
+    }
+    if (!*pos) {
+        *pos = (int *) hnj_malloc(word_size * sizeof(int));
+        memset(*pos, 0, word_size * sizeof(int));
+    }
+    if (!*cut) {
+        *cut = (int *) hnj_malloc(word_size * sizeof(int));
+        memset(*cut, 0, word_size * sizeof(int));
+    }
+}
+
 /* recursive function for compound level hyphenation */
 /* work counts down the letters that may still be split into compound parts again, because a
    replacement at a boundary can leave every part nearly as long as the word */
@@ -1038,18 +1055,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
            if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size &&
                matchlen[i] >= matchindex[i] - i && matchrepl[matchindex[i]]) {
                 if (rep && pos && cut) {
-                    if (!*rep) {
-                        *rep = (char **) hnj_malloc(word_size * sizeof(char *));
-                        memset(*rep, 0, word_size * sizeof(char *));
-                    }
-                    if (!*pos) {
-                        *pos = (int *) hnj_malloc(word_size * sizeof(int));
-                        memset(*pos, 0, word_size * sizeof(int));
-                    }
-                    if (!*cut) {
-                        *cut = (int *) hnj_malloc(word_size * sizeof(int));
-                        memset(*cut, 0, word_size * sizeof(int));
-                    }
+                    hnj_hyphen_alloc_replacements(word_size, rep, pos, cut);
                     hnj_free((*rep)[matchindex[i] - 1]);
                     (*rep)[matchindex[i] - 1] = hnj_strdup(matchrepl[matchindex[i]]);
                     (*pos)[matchindex[i] - 1] = matchindex[i] - i;
@@ -1112,17 +1118,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
             for (j = 0; j < i - begin; j++) {
                 hyphens[begin + j] = hyphens2[j];
                 if (rep2[j] && rep && pos && cut) {
-                    if (!*rep && !*pos && !*cut) {
-                        int k;
-                        *rep = (char **) hnj_malloc(sizeof(char *) * word_size);
-                        *pos = (int *) hnj_malloc(sizeof(int) * word_size);
-                        *cut = (int *) hnj_malloc(sizeof(int) * word_size);
-                        for (k = 0; k < word_size; k++) {
-                            (*rep)[k] = NULL;
-                            (*pos)[k] = 0;
-                            (*cut)[k] = 0;
-                        }
-                    }
+                    hnj_hyphen_alloc_replacements(word_size, rep, pos, cut);
                     /* a replacement at the compound boundary can make the part longer than
                        the rest of the word, so end the cut at the end of the word */
                     int left = word_size - (begin + j + 1 - pos2[j]);
