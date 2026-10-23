@@ -1048,7 +1048,9 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                     hnj_free((*rep)[matchindex[i] - 1]);
                     (*rep)[matchindex[i] - 1] = hnj_strdup(matchrepl[matchindex[i]]);
                     (*pos)[matchindex[i] - 1] = matchindex[i] - i;
-                    (*cut)[matchindex[i] - 1] = matchlen[i];
+                    /* the change starts at i, so it can cut at most the rest of the word */
+                    (*cut)[matchindex[i] - 1] =
+                        matchlen[i] <= word_size - i ? matchlen[i] : word_size - i;
                 }
                 i += matchlen[i] - 1;
           }
@@ -1116,10 +1118,13 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                             (*cut)[k] = 0;
                         }
                     }
+                    /* a replacement at the compound boundary can make the part longer than
+                       the rest of the word, so end the cut at the end of the word */
+                    int left = word_size - (begin + j + 1 - pos2[j]);
                     hnj_free((*rep)[begin + j]);
                     (*rep)[begin + j] = rep2[j];
                     (*pos)[begin + j] = pos2[j];
-                    (*cut)[begin + j] = cut2[j];
+                    (*cut)[begin + j] = cut2[j] <= left ? cut2[j] : left;
                     rep2[j] = NULL;
                 }
             }
