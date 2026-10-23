@@ -198,6 +198,10 @@ int main(int argc, const char* argv[]) {
         // odd, but utf-8 proof
         char c = format[i];
         if (c<'0' || c>'9') pat[j++]=c;
+        else if (i>0 && format[i-1]>='0' && format[i-1]<='9') {
+          fprintf(stderr,"error - two hyphenation values in a row: %s\n",format);
+          exit(1);
+        }
       }
       pat[j]=0;
       pattab_key[patterns]   = pat;
