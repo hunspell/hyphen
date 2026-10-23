@@ -18,7 +18,7 @@ void help() {
 /* get a pointer to the nth 8-bit or UTF-8 character of the word */
 char * hindex(char * word, int n, int utf8) {
     int j = 0;
-    while (j < n) {
+    while (j < n && *word) {
         j++;
         word++;
         while (utf8 && ((((unsigned char) *word) >> 6) == 2)) word++;
