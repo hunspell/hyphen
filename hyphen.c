@@ -1289,6 +1289,12 @@ static int hnj_hyphen_hyphenate_hyphenmin (HyphenDict *dict,
   int * cut_local = NULL;
   int ret = 0;
   int i;
+  /* the code below reads the word up to a terminating NUL, which the caller need not give */
+  char * word_copy = (char *) hnj_malloc(word_size + 1);
+
+  memcpy(word_copy, word, word_size);
+  word_copy[word_size] = '\0';
+  word = word_copy;
 
   if (!rep || !pos || !cut) {
     rep = &rep_local;
@@ -1318,6 +1324,7 @@ static int hnj_hyphen_hyphenate_hyphenmin (HyphenDict *dict,
   }
   free(pos_local);
   free(cut_local);
+  hnj_free(word_copy);
   return ret;
 }
 
