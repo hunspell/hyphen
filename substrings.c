@@ -180,7 +180,7 @@ int main(int argc, const char* argv[]) {
   // read all patterns and split in pure text (_key) & expanded patterns (_val)
   while(fgets(format,132,in) != NULL) {
     int l = strlen(format);
-    if (format[l-1]=='\n') { l--; format[l]=0; } // Chomp
+    if (l>0 && format[l-1]=='\n') { l--; format[l]=0; } // Chomp
     if (format[0]=='%' || format[0]==0) {
       // skip
     } else {
