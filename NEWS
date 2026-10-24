@@ -1,3 +1,21 @@
+2026-10-24 Hyphen 2.8.10:
+  - pkg-config hyphen.pc file (Resolves #29). A package that installs
+    selected make targets needs install-pkgconfigDATA for it
+  - hyph_en_US.dic is now built from Gerard Kuiken's ushyphmax.tex,
+    with local corrections for nihilism and democrat (#25)
+  - substrings.pl keeps the first rule after the comments (hunspell #217),
+    and rejects a pattern with two hyphenation values in a row
+  - correct two replacement starts in tests/conv.pat (Resolves #1)
+  - hnj_hyphen_hyphenate2 and hnj_hyphen_hyphenate3 fail for an empty
+    word
+  - memory-safety fixes for malformed dictionaries and adversarial word
+    input, in the replacement and compound paths
+  - security policy in SECURITY.md, and the fuzz harness in fuzz/ is
+    now in the tarball
+  - building from the tarball uses the shipped hyph_en_US.dic and no
+    longer needs perl, and make check runs with a POSIX sh, not bash
+  - VALGRIND=memcheck make check runs the tests under valgrind again
+
 2026-05-15 Hyphen 2.8.9:
   - new public API: hnj_hyphen_load_data, loads a dictionary from a
     raw memory buffer (Resolves #4, contributed by Roman "SBKarr"

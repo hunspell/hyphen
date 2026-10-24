@@ -1,4 +1,4 @@
-AC_INIT([hyphen],[2.8.9],[nemeth@numbertext.org])
+AC_INIT([hyphen],[2.8.10],[nemeth@numbertext.org])
 AM_INIT_AUTOMAKE
 AC_PROG_CC
 AC_PROG_INSTALL

@@ -7,7 +7,7 @@ libhyphen_la_SOURCES = hnjalloc.c hyphen.c
 #  - public API added:                       c += 1; r = 0; a += 1
 #  - public API removed or signature change: c += 1; r = 0; a = 0
 # Linux SONAME suffix is (current - age).
-libhyphen_la_LDFLAGS = -version-info 4:0:4 -no-undefined
+libhyphen_la_LDFLAGS = -version-info 4:1:4 -no-undefined
 include_HEADERS = hyphen.h
 noinst_HEADERS = hnjalloc.h
 
