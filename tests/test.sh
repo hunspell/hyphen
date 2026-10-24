@@ -39,7 +39,7 @@ if [ "$VALGRIND" != "" ]; then
   if [ ! -d $TEMPDIR/badlogs ]; then
     mkdir $TEMPDIR/badlogs
   fi
-  if [ ! -f ../.libs/lt-example ]; then
+  if [ ! -x ../example ]; then
     echo "Use make check before Valgrind tests"
   else
   EXAMPLE="../libtool --mode=execute -dlopen ../.libs/libhyphen*.la valgrind --tool=$VALGRIND --leak-check=yes --show-reachable=yes --log-file=$TEMPDIR/test.pid ../example"
