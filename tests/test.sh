@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-function check_valgrind_log () {
+check_valgrind_log () {
 if [ "$VALGRIND" != "" ]; then
   if [ -f $TEMPDIR/test.pid* ]; then
     log=`ls $TEMPDIR/test.pid*`
@@ -32,9 +32,7 @@ if [ ! -d $TEMPDIR ]; then
   mkdir $TEMPDIR
 fi
 
-shopt -s expand_aliases
-
-alias example='../libtool --mode=execute -dlopen ../.libs/libhyphen*.la ../example'
+EXAMPLE='../libtool --mode=execute -dlopen ../.libs/libhyphen*.la ../example'
 
 if [ "$VALGRIND" != "" ]; then
   rm -f $TEMPDIR/test.pid*
@@ -44,11 +42,11 @@ if [ "$VALGRIND" != "" ]; then
   if [ ! -f ../.libs/lt-example ]; then
     echo "Use make check before Valgrind tests"
   else
-  alias example='../libtool --mode=execute -dlopen ../.libs/libhyphen*.la valgrind --tool=$VALGRIND --leak-check=yes --show-reachable=yes --log-file=$TEMPDIR/test.pid ../example'
+  EXAMPLE="../libtool --mode=execute -dlopen ../.libs/libhyphen*.la valgrind --tool=$VALGRIND --leak-check=yes --show-reachable=yes --log-file=$TEMPDIR/test.pid ../example"
   fi
 fi
 
-example $TESTDIR/$1 $TESTDIR/$2 >$TEMPDIR/test.out$$
+$EXAMPLE $TESTDIR/$1 $TESTDIR/$2 >$TEMPDIR/test.out$$
 diff $TEMPDIR/test.out$$ $TESTDIR/$3 || exit 1
 #diff $TEMPDIR/test.out$$ $TESTDIR/$3 && rm -f $TEMPDIR/*$$ || exit 1
 
