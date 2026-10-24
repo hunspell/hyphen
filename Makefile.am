@@ -1,4 +1,4 @@
-SUBDIRS= doc tests
+SUBDIRS= . doc tests
 
 lib_LTLIBRARIES = libhyphen.la
 libhyphen_la_SOURCES = hnjalloc.c hyphen.c
