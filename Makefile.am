@@ -33,14 +33,15 @@ EXTRA_DIST = checkme.lst ushyphmax.tex tbhyphext.tex tbhyphext.sh \
     fuzz/fuzz_hyphen.c fuzz/build.sh fuzz/build_corpus.sh fuzz/run_long.sh \
     fuzz/triage.sh fuzz/triage_one.sh
 
-hyphen.us3:
+# The release tarball carries hyph_en_US.dic newer than its sources, so building from it needs
+# no perl.
+hyph_en_US.dic: $(srcdir)/ushyphmax.tex $(srcdir)/tbhyphext.tex $(srcdir)/tbhyphext.sh \
+    $(srcdir)/lig.awk $(srcdir)/ligpatch.txt $(srcdir)/corrections.txt $(srcdir)/substrings.pl
 	sed '/^%/d' $(srcdir)/ushyphmax.tex >hyphen.us
 	$(srcdir)/tbhyphext.sh <$(srcdir)/tbhyphext.tex >hyphen.us2
 	cat hyphen.us hyphen.us2 | $(AWK) -f $(srcdir)/lig.awk >hyphen.us3
 	cat $(srcdir)/ligpatch.txt >>hyphen.us3
 	cat $(srcdir)/corrections.txt >>hyphen.us3
-
-hyph_en_US.dic: hyphen.us3
 	perl $(srcdir)/substrings.pl hyphen.us3 hyph_en_US.dic UTF-8 2 3 >/dev/null
 
 clean-local:
