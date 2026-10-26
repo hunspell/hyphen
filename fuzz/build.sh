@@ -1,10 +1,11 @@
 #!/bin/sh
 # Build libFuzzer harnesses for hyphen.
 #
-# Produces two binaries in fuzz/:
-#   fuzz_hyphen      - libFuzzer + ASan + UBSan, the actual fuzz target.
-#   fuzz_hyphen_cov  - coverage-instrumented (no sanitizers), for post-run
-#                      coverage reporting via llvm-profdata + llvm-cov.
+# Produces these binaries in fuzz/:
+#   fuzz_hyphen        - libFuzzer + ASan + UBSan, the main fuzz target.
+#   fuzz_hyphen_cov    - coverage-instrumented (no sanitizers), for post-run
+#                        coverage reporting via llvm-profdata + llvm-cov.
+#   fuzz_substrings    - libFuzzer + ASan + UBSan for the substrings converter.
 
 set -eu
 
@@ -28,5 +29,12 @@ $CC $CFLAGS_COMMON \
     $SOURCES \
     -o fuzz/fuzz_hyphen_cov
 
+echo "[fuzz] building fuzz_substrings (fuzzer + ASan + UBSan)"
+$CC $CFLAGS_COMMON \
+    -fsanitize=fuzzer,address,undefined \
+    -fno-sanitize-recover=undefined \
+    fuzz/fuzz_substrings.c \
+    -o fuzz/fuzz_substrings
+
 echo "[fuzz] done:"
-ls -lh fuzz/fuzz_hyphen fuzz/fuzz_hyphen_cov
+ls -lh fuzz/fuzz_hyphen fuzz/fuzz_hyphen_cov fuzz/fuzz_substrings
