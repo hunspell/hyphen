@@ -1102,7 +1102,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
             if ((size_t)sub_size + begin + 2 > prep_word_size)
                 sub_size = (int)(prep_word_size - begin - 2);
             if (sub_size < 1) sub_size = 1;
-            memset(hyphens2, '0', i - begin);
+            for (j = 0; j < i - begin; j++) hyphens2[j] = '0';
             hnj_hyphen_hyph_depth(dict, prep_word + begin + 1, sub_size,
                 hyphens2, &rep2, &pos2, &cut2, clhmin,
                 crhmin, (begin > 0 ? 0 : lend), (hyphens[i]&1 ? 0 : rend), depth + 1, work);
