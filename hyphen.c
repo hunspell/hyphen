@@ -891,7 +891,6 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
   int * matchindex;
   char ** matchrepl;
   int isrepl = 0;
-  int nHyphCount;
 
   size_t prep_word_size = word_size + 3;
   prep_word = (char*) hnj_malloc (prep_word_size);
@@ -1027,13 +1026,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
     hyphens[i] = '0';
   hyphens[word_size] = '\0';
 
-       /* now create a new char string showing hyphenation positions */
-       /* count the hyphens and allocate space for the new hyphenated string */
-       nHyphCount = 0;
-       for (i = 0; i < word_size; i++)
-          if (hyphens[i]&1)
-             nHyphCount++;
-       j = 0;
+       /* hand back the replacements of the winning patterns */
        for (i = 0; i < word_size; i++) {
            /* the hyphenation point lies inside the cut, which starts at i */
            if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size &&
@@ -1056,7 +1049,6 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                     (*pos)[matchindex[i] - 1] = matchindex[i] - i;
                     (*cut)[matchindex[i] - 1] = matchlen[i];
                 }
-                j += strlen(matchrepl[matchindex[i]]);
                 i += matchlen[i] - 1;
           }
        }
