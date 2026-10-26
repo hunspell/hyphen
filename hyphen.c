@@ -1033,7 +1033,9 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
              nHyphCount++;
        j = 0;
        for (i = 0; i < word_size; i++) {
-           if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size && matchrepl[matchindex[i]]) {
+           /* the hyphenation point lies inside the cut, which starts at i */
+           if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size &&
+               matchlen[i] >= matchindex[i] - i && matchrepl[matchindex[i]]) {
                 if (rep && pos && cut) {
                     if (!*rep) {
                         *rep = (char **) hnj_malloc(word_size * sizeof(char *));
