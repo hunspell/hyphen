@@ -7,7 +7,8 @@ patterns converted to a .dic file. Office suites and desktop publishing programs
 
 The main untrusted input is the word being hyphenated: text taken from a document and passed to
 hnj_hyphen_hyphenate, hnj_hyphen_hyphenate2 or hnj_hyphen_hyphenate3. A word can be any byte
-sequence in the dictionary encoding, 8-bit or UTF-8, of any length.
+sequence in the dictionary encoding, 8-bit or UTF-8, of any length; the hyphenate functions fail
+for an empty word and for one over INT_MAX / 8 bytes.
 
 Hyphenation dictionaries (hyph_*.dic) are a weaker boundary. They are normally installed from a
 distribution package or an extension, so a malicious dictionary needs the user to install it.
@@ -48,7 +49,7 @@ replacement and its position and cut values come from the dictionary too.
 ## Anything to leave alone
 
 - The caller allocates the output buffers, at the sizes that hyphen.h gives: hyphens holds
-  word_size + 5 bytes, and hyphenated_word about word_size * 2. A bug that needs a caller to pass
+  word_size + 5 bytes, and hyphenated_word word_size * 2. A bug that needs a caller to pass
   smaller buffers than that is a bug in the caller.
 - hnj_hyphen_hyphenate is the old interface, kept for compatibility. Bugs there are in scope but
   the newer functions matter more.

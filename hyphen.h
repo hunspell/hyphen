@@ -117,9 +117,11 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
  word_size: byte length of the input word, at least 1 (an empty word fails)
 
  hyphens:   allocated character buffer (size = word_size + 5)
- hyphenated_word: allocated character buffer (size ~ word_size * 2) or NULL
+ hyphenated_word: allocated character buffer (size = word_size * 2) or NULL
  rep, pos, cut: pointers (point to the allocated and _zeroed_ buffers
-                (size=word_size) or with NULL value) or NULL
+                (size=word_size) or with NULL value) or NULL.
+                Zero the buffers before every call: the library frees
+                any string it overwrites in rep.
 
  output data:
  hyphens:   hyphenation vector (hyphenation points signed with odd numbers)
