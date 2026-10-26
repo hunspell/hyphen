@@ -365,10 +365,11 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 	  dict->states[state_num].repl = repl;
 	  dict->states[state_num].replindex = replindex;
           if (!replcut) {
-            dict->states[state_num].replcut = (signed char) strlen(word);
-          } else {
-            dict->states[state_num].replcut = replcut;
+            /* the whole pattern is cut, without its dots */
+            for (i = 0; word[i]; i++)
+                if (word[i] != '.') replcut++;
           }
+          dict->states[state_num].replcut = replcut;
 
 	  /* now, put in the prefix transitions */
           for (; found < 0 && j > 0; --j)
