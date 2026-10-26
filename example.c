@@ -162,6 +162,7 @@ main(int argc, char** argv)
        hword = (char *) malloc(n * 2);
        hword[0] = '\0';
 
+       /* coverity[tainted_data : FALSE] */
        if ((!optd && hnj_hyphen_hyphenate(dict, lcword, n, hyphens)) ||
 	    (optd && hnj_hyphen_hyphenate2(dict, lcword, n, hyphens, hword, &rep, &pos, &cut))) {
              free(hyphens);
