@@ -1128,7 +1128,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                 }
             }
             prep_word[i + 2] = word[i + 1];
-            if (*rep && *pos && *cut && (*rep)[i]) {
+            if (rep && *rep && *pos && *cut && (*rep)[i]) {
                 size_t offset = 1;
                 strncpy(prep_word + offset, word, prep_word_size - offset - 1);
                 prep_word[prep_word_size - 1] = '\0';
