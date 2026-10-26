@@ -280,9 +280,9 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 	    dict->nohyphenl = 0;
 	    if (*space != '\0') dict->nohyphen = hnj_strdup(space);
 	    if (dict->nohyphen) {
-	        char * nhe = dict->nohyphen + strlen(dict->nohyphen) - 1;
-	        *nhe = 0;
-	        for (nhe = nhe - 1; nhe > dict->nohyphen; nhe--) {
+	        char * nhe;
+	        hnj_strchomp(dict->nohyphen);
+	        for (nhe = dict->nohyphen + strlen(dict->nohyphen); nhe > dict->nohyphen; nhe--) {
 	                if (*nhe == ',') {
 	                    dict->nohyphenl++;
 	                    *nhe = 0;
