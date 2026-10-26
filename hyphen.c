@@ -1098,6 +1098,9 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
             hnj_hyphen_hyph_depth(dict, prep_word + begin + 1, sub_size,
                 hyphens2, &rep2, &pos2, &cut2, clhmin,
                 crhmin, (begin > 0 ? 0 : lend), (hyphens[i]&1 ? 0 : rend), depth + 1, work);
+            /* a replacement can make the part shorter than the span, and then its
+               terminator is inside the span and reads as no hyphenation point */
+            if (sub_size < i - begin) hyphens2[sub_size] = '0';
             for (j = 0; j < i - begin; j++) {
                 hyphens[begin + j] = hyphens2[j];
                 if (rep2[j] && rep && pos && cut) {
