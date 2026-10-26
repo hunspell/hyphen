@@ -1124,9 +1124,11 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
             }
             prep_word[i + 2] = word[i + 1];
             if (rep && *rep && *pos && *cut && (*rep)[i]) {
-                size_t offset = 1;
-                strncpy(prep_word + offset, word, prep_word_size - offset - 1);
-                prep_word[prep_word_size - 1] = '\0';
+                /* put the word back as it was first copied, with its digits as dots */
+                for (j = 0; j < word_size; j++)
+                    prep_word[j + 1] = (word[j] <= '9' && word[j] >= '0') ? '.' : word[j];
+                prep_word[word_size + 1] = '.';
+                prep_word[word_size + 2] = '\0';
             }
         }
         begin = i + 1;
