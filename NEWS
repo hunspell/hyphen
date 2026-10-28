@@ -1,4 +1,4 @@
-2026-10-24 Hyphen 2.8.10:
+2026-10-28 Hyphen 2.8.10:
   - pkg-config hyphen.pc file (Resolves #29). A package that installs
     selected make targets needs install-pkgconfigDATA for it
   - hyph_en_US.dic is now built from Gerard Kuiken's ushyphmax.tex,
@@ -10,6 +10,16 @@
     word
   - memory-safety fixes for malformed dictionaries and adversarial word
     input, in the replacement and compound paths
+  - hyphenation fixes in the compound and replacement paths: a part
+    keeps its hyphenation points after a replacement at a compound
+    boundary, digits are restored as dots, a replacement with no cut
+    counts its characters without the dots, and the work spent
+    splitting compound parts again is bounded
+  - a NOHYPHEN entry at the end of its line applies in a dictionary
+    with CRLF line ends, which changes Catalan and Mongolian
+    hyphenation at the typographic apostrophe
+  - the hyphen.c helpers that hyphen.h never declared are no longer
+    exported from the shared library
   - security policy in SECURITY.md, and the fuzz harness in fuzz/ is
     now in the tarball
   - building from the tarball uses the shipped hyph_en_US.dic and no
