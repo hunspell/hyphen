@@ -30,7 +30,8 @@ EXTRA_DIST = checkme.lst ushyphmax.tex tbhyphext.tex tbhyphext.sh \
     README.compound README.hyphen README.nonstandard substrings.pl \
     COPYING.MPL COPYING.LGPL hyph_en_US.dic README_hyph_en_US.txt lig.awk \
     ligpatch.txt corrections.txt hyphen.pc.in SECURITY.md \
-    fuzz/fuzz_hyphen.c fuzz/build.sh fuzz/build_corpus.sh fuzz/run_long.sh \
+    fuzz/fuzz_hyphen.c fuzz/fuzz_substrings.c fuzz/build.sh fuzz/build_corpus.sh \
+    fuzz/run_long.sh \
     fuzz/triage.sh fuzz/triage_one.sh
 
 # The release tarball carries hyph_en_US.dic newer than its sources, so building from it needs
