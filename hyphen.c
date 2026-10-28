@@ -81,7 +81,7 @@ hnj_strdup (const char *s)
 }
 
 /* remove cross-platform text line end characters */
-void hnj_strchomp(char * s)
+static void hnj_strchomp(char * s)
 {
   int k = strlen(s);
   if ((k > 0) && ((*(s+k-1)=='\r') || (*(s+k-1)=='\n'))) *(s+k-1) = '\0';
@@ -248,7 +248,7 @@ get_state_str (int state, int level)
 }
 #endif
 
-void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
+static void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
   int i, j;
   char word[MAX_CHARS];
   char pattern[MAX_CHARS];
@@ -388,7 +388,7 @@ void hnj_hyphen_load_line(char * buf, HyphenDict * dict, HashTab * hashtab) {
 	    }
 }
 
-FILE * hnj_fopen(const char * path, const char * mode) {
+static FILE * hnj_fopen(const char * path, const char * mode) {
 #ifdef _WIN32
 #define WIN32_LONG_PATH_PREFIX "\\\\?\\"
     if (strncmp(path, WIN32_LONG_PATH_PREFIX, 4) == 0) {
@@ -781,7 +781,7 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
 }
 
 /* Unicode ligature length */
-int hnj_ligature(unsigned char c) {
+static int hnj_ligature(unsigned char c) {
     switch (c) {
         case 0x80:			/* ff */
         case 0x81:			/* fi */
@@ -795,7 +795,7 @@ int hnj_ligature(unsigned char c) {
 }
 
 /* character length of the first n byte of the input word */
-int hnj_hyphen_strnlen(const char * word, int n, int utf8)
+static int hnj_hyphen_strnlen(const char * word, int n, int utf8)
 {
     int i = 0;
     int j = 0;
@@ -810,7 +810,7 @@ int hnj_hyphen_strnlen(const char * word, int n, int utf8)
     return i;
 }
 
-int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
+static int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
 	char *** rep, int ** pos, int ** cut, int lhmin)
 {
     int i = 1, j;
@@ -846,7 +846,7 @@ int hnj_hyphen_lhmin(int utf8, const char *word, int word_size, char * hyphens,
     return 0;
 }
 
-int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
+static int hnj_hyphen_rhmin(int utf8, const char *word, int word_size, char * hyphens,
 	char *** rep, int ** pos, int ** cut, int rhmin)
 {
     int i = 0;
@@ -1165,7 +1165,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
   return 0;
 }
 
-int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
+static int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
     char * hyphens, char *** rep, int ** pos, int ** cut,
     int clhmin, int crhmin, int lend, int rend)
 {
@@ -1175,7 +1175,7 @@ int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
 }
 
 /* UTF-8 normalization of hyphen and non-standard positions */
-int hnj_hyphen_norm(const char *word, int word_size, char * hyphens,
+static int hnj_hyphen_norm(const char *word, int word_size, char * hyphens,
 	char *** rep, int ** pos, int ** cut)
 {
   int i, j, k;
@@ -1218,7 +1218,7 @@ int hnj_hyphen_norm(const char *word, int word_size, char * hyphens,
 }
 
 /* get the word with all possible hyphenations (output: hyphword) */
-void hnj_hyphen_hyphword(const char * word, int word_size, const char * hyphens,
+static void hnj_hyphen_hyphword(const char * word, int word_size, const char * hyphens,
     char * hyphword, char *** rep, int ** pos, int ** cut)
 {
 
