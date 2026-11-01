@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CFLAGS: -Wall -Wextra -Werror
+
+jobs:
+  linux:
+    name: Ubuntu ${{ matrix.cc }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cc: [gcc, clang]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y autoconf automake libtool clang
+      - name: Configure
+        run: |
+          autoreconf -vfi
+          ./configure CC=${{ matrix.cc }}
+      - name: Build
+        run: make -j$(nproc)
+      - name: Check
+        run: make -j$(nproc) check || { cat tests/test-suite.log; exit 1; }
+      - name: Distcheck
+        if: matrix.cc == 'gcc'
+        run: make -j$(nproc) distcheck
+
+  alpine:
+    name: Alpine (musl)
+    runs-on: ubuntu-latest
+    container: alpine:latest
+    steps:
+      - name: Install dependencies
+        run: apk add --no-cache build-base autoconf automake libtool perl
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: |
+          autoreconf -vfi
+          ./configure
+      - name: Build
+        run: make -j$(nproc)
+      - name: Check
+        run: make -j$(nproc) check || { cat tests/test-suite.log; exit 1; }
+
+  macos:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: brew install autoconf automake libtool
+      - name: Configure
+        run: |
+          autoreconf -vfi
+          ./configure
+      - name: Build
+        run: make -j$(sysctl -n hw.ncpu)
+      - name: Check
+        run: make -j$(sysctl -n hw.ncpu) check || { cat tests/test-suite.log; exit 1; }
+
+  windows:
+    name: Windows MSYS2 MINGW64
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            autoconf automake make perl
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-libtool
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: |
+          autoreconf -vfi
+          ./configure
+      - name: Build
+        run: make -j$(nproc)
+      - name: Check
+        run: make -j$(nproc) check || { cat tests/test-suite.log; exit 1; }
