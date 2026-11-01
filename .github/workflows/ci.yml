@@ -71,7 +71,7 @@ jobs:
         run: make -j$(sysctl -n hw.ncpu) check || { cat tests/test-suite.log; exit 1; }
 
   windows:
-    name: Windows MSYS2 MINGW64
+    name: Windows MSYS2 UCRT64
     runs-on: windows-latest
     defaults:
       run:
@@ -79,12 +79,12 @@ jobs:
     steps:
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: true
           install: >-
             autoconf automake make perl
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-libtool
+            mingw-w64-ucrt-x86_64-toolchain
+            mingw-w64-ucrt-x86_64-libtool
       - uses: actions/checkout@v4
       - name: Configure
         run: |
