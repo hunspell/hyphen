@@ -45,7 +45,7 @@ if [ "$VALGRIND" != "" ]; then
 fi
 
 # Windows builds write CRLF line endings, the expected files have LF.
-$EXAMPLE $TESTDIR/$1 $TESTDIR/$2 | tr -d '\r' >$TEMPDIR/test.out$$
+$EXAMPLE $TESTDIR/$1 $TESTDIR/$2 | LC_ALL=C tr -d '\r' >$TEMPDIR/test.out$$
 diff $TEMPDIR/test.out$$ $TESTDIR/$3 || exit 1
 #diff $TEMPDIR/test.out$$ $TESTDIR/$3 && rm -f $TEMPDIR/*$$ || exit 1
 
