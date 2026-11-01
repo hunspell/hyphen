@@ -1099,7 +1099,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                 prep_word[prep_word_size - 1] = '\0';
                 if (l) {
                     hyph = (l - (*rep)[i]) - (*pos)[i];
-                    if (2 + i + hyph < prep_word_size)
+                    if (2 + i + hyph >= 0 && (size_t)(2 + i + hyph) < prep_word_size)
                         prep_word[2 + i + hyph] = '\0';
                 }
             }

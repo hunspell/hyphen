@@ -30,7 +30,7 @@ char * hindex(char * word, int n, int utf8) {
 void single_hyphenations(char * word, char * hyphen, char ** rep, int * pos, int * cut, int utf8) {
     int i, k, j = 0;
     char r;
-    for (i = 0; (i + 1) < strlen(word); i++) {
+    for (i = 0; (size_t)(i + 1) < strlen(word); i++) {
         if (utf8 && ((((unsigned char) word[i]) >> 6) == 2)) continue;
         if ((hyphen[j] & 1)) {
             if (rep && rep[j]) {
@@ -75,6 +75,9 @@ main(int argc, char** argv)
     char ** rep;
     int * pos;
     int * cut;
+
+    /* the options are read until the NULL that ends argv */
+    (void)argc;
 
   /* first parse the command line options */
   /* arg1 - hyphen dictionary file, arg2 - file of words to check */
