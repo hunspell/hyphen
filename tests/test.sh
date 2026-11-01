@@ -28,9 +28,7 @@ TESTDIR="${srcdir:-.}"
 TEMPDIR="./testSubDir"
 NAME="$1"
 
-if [ ! -d $TEMPDIR ]; then
-  mkdir $TEMPDIR
-fi
+mkdir -p $TEMPDIR
 
 EXAMPLE='../libtool --mode=execute -dlopen ../.libs/libhyphen*.la ../example'
 
@@ -46,7 +44,8 @@ if [ "$VALGRIND" != "" ]; then
   fi
 fi
 
-$EXAMPLE $TESTDIR/$1 $TESTDIR/$2 >$TEMPDIR/test.out$$
+# Windows builds write CRLF line endings, the expected files have LF.
+$EXAMPLE $TESTDIR/$1 $TESTDIR/$2 | tr -d '\r' >$TEMPDIR/test.out$$
 diff $TEMPDIR/test.out$$ $TESTDIR/$3 || exit 1
 #diff $TEMPDIR/test.out$$ $TESTDIR/$3 && rm -f $TEMPDIR/*$$ || exit 1
 
