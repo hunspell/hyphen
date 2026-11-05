@@ -11,17 +11,26 @@ upgrade.
 Memory safety problems reachable from ordinary use: a crash, or a read
 or write outside a buffer, when hyphenating words taken from a
 document, against a hyphenation dictionary installed the normal way.
-Dictionary loading is in scope too.
 
 ## What is out of scope
 
-1. Wrong or missing hyphenation points. Those are pattern questions and
+1. A crafted dictionary. Dictionaries are installed data, from a
+   distribution package or from an extension the user chose, and an
+   extension can already run code as the user. A bug that needs a
+   crafted dictionary is fixed as an ordinary bug, with no advisory
+   and no CVE. If a CVE is assigned for one anyway, we will ask for it
+   to be marked disputed.
+2. Wrong or missing hyphenation points. Those are pattern questions and
    belong to the dictionary for the language concerned.
-2. High memory use or slow hyphenation on input built to be
+3. High memory use or slow hyphenation on input built to be
    pathological.
-3. Bugs in the applications that embed Hyphen, including callers that
+4. Bugs in the applications that embed Hyphen, including callers that
    pass smaller output buffers than hyphen.h asks for. Report those to
    the application.
+
+One report per root cause. A variant of an issue already reported, or
+of a fix under review, earns no separate credit, and a finding against
+code that is in no release is fixed on master without an advisory.
 
 ## How to report
 
