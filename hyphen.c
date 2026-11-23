@@ -653,6 +653,11 @@ void hnj_hyphen_free (HyphenDict *dict)
 /* the deepest nesting of compound parts that is split again */
 #define MAX_COMPOUND_DEPTH 32
 
+static char hnj_prep_char(char c)
+{
+  return (c <= '9' && c >= '0') ? '.' : c;
+}
+
 int hnj_hyphen_hyphenate (HyphenDict *dict,
 			   const char *word, int word_size,
 			   char *hyphens)
@@ -673,13 +678,8 @@ int hnj_hyphen_hyphenate (HyphenDict *dict,
   j = 0;
   prep_word[j++] = '.';
 
-  for (i = 0; i < word_size; i++) {
-    if (word[i] <= '9' && word[i] >= '0') {
-      prep_word[j++] = '.';
-    } else {
-      prep_word[j++] = word[i];
-    }
-  }
+  for (i = 0; i < word_size; i++)
+    prep_word[j++] = hnj_prep_char(word[i]);
 
   prep_word[j++] = '.';
   prep_word[j] = '\0';
@@ -925,13 +925,8 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
   j = 0;
   prep_word[j++] = '.';
 
-  for (i = 0; i < word_size; i++) {
-    if (word[i] <= '9' && word[i] >= '0') {
-      prep_word[j++] = '.';
-    } else {
-      prep_word[j++] = word[i];
-    }
-  }
+  for (i = 0; i < word_size; i++)
+    prep_word[j++] = hnj_prep_char(word[i]);
 
 
 
@@ -1090,6 +1085,8 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
         (hyphens[i]&1 || (begin > 0 && i + 1 == word_size)) {
         if (i - begin > 0) {
             int hyph = 0;
+            /* the part has the letters of the word before this index */
+            int same = word_size;
             prep_word[i + 2] = '\0';
             /* non-standard hyphenation at compound boundary (Schiffahrt) */
             if (rep && *rep && *pos && *cut && (*rep)[i]) {
@@ -1102,6 +1099,10 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                     if (2 + i + hyph >= 0 && (size_t)(2 + i + hyph) < prep_word_size)
                         prep_word[2 + i + hyph] = '\0';
                 }
+                same = i + 1 - (*pos)[i];
+                while (same < word_size && prep_word[same + 1] &&
+                    prep_word[same + 1] == hnj_prep_char(word[same]))
+                    same++;
             }
             int sub_size = i - begin + 1 + hyph;
             if (sub_size >= word_size) sub_size = word_size - 1;
@@ -1116,16 +1117,20 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
                terminator is inside the span and reads as no hyphenation point */
             if (sub_size < i - begin) hyphens2[sub_size] = '0';
             for (j = 0; j < i - begin; j++) {
+                /* drop the points from the first letter where the part differs from the
+                   word, and the changes that reach that letter */
+                if (begin + j >= same ||
+                    (rep2[j] && begin + j + 1 - pos2[j] + cut2[j] > same)) {
+                    hyphens[begin + j] = '0';
+                    continue;
+                }
                 hyphens[begin + j] = hyphens2[j];
                 if (rep2[j] && rep && pos && cut) {
                     hnj_hyphen_alloc_replacements(word_size, rep, pos, cut);
-                    /* a replacement at the compound boundary can make the part longer than
-                       the rest of the word, so end the cut at the end of the word */
-                    int left = word_size - (begin + j + 1 - pos2[j]);
                     hnj_free((*rep)[begin + j]);
                     (*rep)[begin + j] = rep2[j];
                     (*pos)[begin + j] = pos2[j];
-                    (*cut)[begin + j] = cut2[j] <= left ? cut2[j] : left;
+                    (*cut)[begin + j] = cut2[j];
                     rep2[j] = NULL;
                 }
             }
@@ -1133,7 +1138,7 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
             if (rep && *rep && *pos && *cut && (*rep)[i]) {
                 /* put the word back as it was first copied, with its digits as dots */
                 for (j = 0; j < word_size; j++)
-                    prep_word[j + 1] = (word[j] <= '9' && word[j] >= '0') ? '.' : word[j];
+                    prep_word[j + 1] = hnj_prep_char(word[j]);
                 prep_word[word_size + 1] = '.';
                 prep_word[word_size + 2] = '\0';
             }

@@ -19,6 +19,8 @@ compound4.test \
 compound5.test \
 compound6.test \
 compound7.test \
+compound8.test \
+compound9.test \
 settings.test \
 settings2.test \
 settings3.test \
@@ -106,6 +108,14 @@ compound7.hyph \
 compound7.pat \
 compound7.test \
 compound7.word \
+compound8.hyph \
+compound8.pat \
+compound8.test \
+compound8.word \
+compound9.hyph \
+compound9.pat \
+compound9.test \
+compound9.word \
 settings.hyph \
 settings.pat \
 settings.word \
