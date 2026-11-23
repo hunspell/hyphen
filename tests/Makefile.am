@@ -37,7 +37,8 @@ nohyphen3.test \
 rhmin2.test \
 replindex.test \
 matchindex.test \
-utf8cut.test
+utf8cut.test \
+winner.test
 
 distclean-local:
 	-rm -rf testSubDir
@@ -200,4 +201,8 @@ matchindex.word \
 utf8cut.hyph \
 utf8cut.pat \
 utf8cut.test \
-utf8cut.word
+utf8cut.word \
+winner.hyph \
+winner.pat \
+winner.test \
+winner.word

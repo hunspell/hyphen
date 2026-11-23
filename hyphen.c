@@ -910,17 +910,20 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
   signed char replindex;
   signed char replcut;
   int offset;
-  int * matchlen;
-  int * matchindex;
+  /* the replacement of the pattern that holds each hyphenation point, with the start and the
+     cut of its change */
   char ** matchrepl;
+  int * matchstart;
+  int * matchcut;
   int isrepl = 0;
 
   size_t prep_word_size = word_size + 3;
   prep_word = (char*) hnj_malloc (prep_word_size);
-  matchlen = (int*) hnj_malloc ((word_size + 3) * sizeof(int));
-  memset(matchlen, 0, (word_size + 3) * sizeof(int));
-  matchindex = (int*) hnj_malloc ((word_size + 3) * sizeof(int));
   matchrepl = (char**) hnj_malloc ((word_size + 3) * sizeof(char *));
+  matchstart = (int*) hnj_malloc ((word_size + 3) * sizeof(int));
+  matchcut = (int*) hnj_malloc ((word_size + 3) * sizeof(int));
+  for (i = 0; i < word_size + 3; i++)
+    matchrepl[i] = NULL;
 
   j = 0;
   prep_word[j++] = '.';
@@ -996,25 +999,19 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
 	    putchar (' ');
 	  printf ("%s (%s)\n", match, repl);
 #endif
-          if (repl) {
-            if (!isrepl) for(; isrepl < word_size; isrepl++) {
-                matchrepl[isrepl] = NULL;
-                matchindex[isrepl] = -1;
-            }
-            if (offset + replindex >= 0 && offset + replindex < word_size + 3)
-                matchlen[offset + replindex] = replcut;
-          }
+          if (repl) isrepl = 1;
 	  /* This is a linear search because I tried a binary search and
 	     found it to be just a teeny bit slower. */
 	  for (k = (offset < 0 ? -offset : 0); match[k]; k++) {
 	    if ((hyphens[offset + k] < match[k])) {
 	      hyphens[offset + k] = match[k];
-              if (match[k]&1) {
-                matchrepl[offset + k] = repl;
-                if (repl && (k >= replindex) && (k <= replindex + replcut)
-                    && offset + replindex >= 0) {
-                    matchindex[offset + replindex] = offset + k;
-                }
+              if (match[k]&1 && repl && (k >= replindex) && (k <= replindex + replcut)
+                  && offset + replindex >= 0) {
+                  matchrepl[offset + k] = repl;
+                  matchstart[offset + k] = offset + replindex;
+                  matchcut[offset + k] = replcut;
+              } else {
+                  matchrepl[offset + k] = NULL;
               }
             }
           }
@@ -1044,27 +1041,27 @@ static int hnj_hyphen_hyph_depth(HyphenDict *dict, const char *word, int word_si
     hyphens[i] = '0';
   hyphens[word_size] = '\0';
 
-       /* hand back the replacements of the winning patterns */
-       for (i = 0; i < word_size; i++) {
-           /* the hyphenation point lies inside the cut, which starts at i */
-           if (isrepl && matchlen[i] >= 1 && matchindex[i] >= 1 && matchindex[i] <= word_size &&
-               matchlen[i] >= matchindex[i] - i && matchrepl[matchindex[i]]) {
+       /* hand back the replacements of the winning patterns, skipping a change that overlaps the
+          one before */
+       int end = 0;
+       for (i = 1; isrepl && i <= word_size; i++) {
+           int start = matchstart[i];
+           if (matchrepl[i] && start >= end && matchcut[i] >= 1) {
                 if (rep && pos && cut) {
                     hnj_hyphen_alloc_replacements(word_size, rep, pos, cut);
-                    hnj_free((*rep)[matchindex[i] - 1]);
-                    (*rep)[matchindex[i] - 1] = hnj_strdup(matchrepl[matchindex[i]]);
-                    (*pos)[matchindex[i] - 1] = matchindex[i] - i;
-                    /* the change starts at i, so it can cut at most the rest of the word */
-                    (*cut)[matchindex[i] - 1] =
-                        matchlen[i] <= word_size - i ? matchlen[i] : word_size - i;
+                    hnj_free((*rep)[i - 1]);
+                    (*rep)[i - 1] = hnj_strdup(matchrepl[i]);
+                    (*pos)[i - 1] = i - start;
+                    (*cut)[i - 1] =
+                        matchcut[i] <= word_size - start ? matchcut[i] : word_size - start;
                 }
-                i += matchlen[i] - 1;
+                end = start + matchcut[i];
           }
        }
 
   hnj_free (matchrepl);
-  hnj_free (matchlen);
-  hnj_free (matchindex);
+  hnj_free (matchstart);
+  hnj_free (matchcut);
 
   /* recursive hyphenation of the first (compound) level segments */
   if (dict->nextlevel) {
