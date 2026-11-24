@@ -1171,7 +1171,8 @@ static int hnj_hyphen_hyph_(HyphenDict *dict, const char *word, int word_size,
     char * hyphens, char *** rep, int ** pos, int ** cut,
     int clhmin, int crhmin, int lend, int rend)
 {
-  int work = MAX_COMPOUND_DEPTH * (word_size + MAX_CHARS);
+  int work = word_size <= INT_MAX / MAX_COMPOUND_DEPTH - MAX_CHARS ?
+    MAX_COMPOUND_DEPTH * (word_size + MAX_CHARS) : INT_MAX;
   return hnj_hyphen_hyph_depth(dict, word, word_size, hyphens, rep, pos, cut,
     clhmin, crhmin, lend, rend, 0, &work);
 }
