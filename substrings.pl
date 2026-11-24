@@ -12,8 +12,8 @@ if (!defined $ARGV[1]) {
 }
 $fn = $ARGV[0];
 if (!-e $fn) { $fn = "hyphen.us"; }
-open HYPH, $fn;
-open OUT, ">$ARGV[1]";
+open HYPH, '<', $fn or die "$fn: $!\n";
+open OUT, '>', $ARGV[1] or die "$ARGV[1]: $!\n";
 $encoding = $ARGV[2];
 $lhmin = $ARGV[3];
 $rhmin = $ARGV[4];
