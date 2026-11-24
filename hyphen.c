@@ -1237,19 +1237,34 @@ static void hnj_hyphen_hyphword(const char * word, int word_size, const char * h
     nonstandard = 1;
   }
 
-  int i;
+  /* where each byte of the word is written in hyphword */
+  int * start = (int *) hnj_malloc(word_size * sizeof(int));
+
+  int i, k;
   int j = 0;
   for (i = 0; i < word_size && j < hyphword_size; i++) {
+    start[i] = j;
     hyphword[j++] = word[i];
     if (hyphens[i]&1 && j < hyphword_size) {
-      if (nonstandard && (*rep)[i] && j >= (*pos)[i]) {
-        /* non-standard */
-        j -= (*pos)[i];
+      if (nonstandard && (*rep)[i] && (*pos)[i] >= 0 && (*pos)[i] <= i + 1) {
+        /* non-standard: the replacement is written over the change from its first letter */
+        int first = i + 1 - (*pos)[i];
+        int end = first + (*cut)[i];
+        if (end > word_size) end = word_size;
+        if (first <= i) j = start[first];
+        else if (first < end) start[first] = j;
         char *s = (*rep)[i];
         while (*s && j < hyphword_size) {
           hyphword[j++] = *s++;
         }
-        i += (*cut)[i] - (*pos)[i];
+        /* a later change that starts inside this one is written after the replacement, or at
+           the letters that end both the replacement and the change */
+        for (k = first + 1; k < end; k++)
+          start[k] = j;
+        for (k = end - 1; k > first && j - (end - k) >= 0 &&
+            hyphword[j - (end - k)] == word[k]; k--)
+          start[k] = j - (end - k);
+        if (end - 1 > i) i = end - 1;
       } else {
         /* standard */
         hyphword[j++] = '=';
@@ -1257,6 +1272,7 @@ static void hnj_hyphen_hyphword(const char * word, int word_size, const char * h
     }
   }
   hyphword[j] = '\0';
+  hnj_free(start);
 }
 
 
